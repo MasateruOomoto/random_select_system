@@ -1,12 +1,17 @@
 package models;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import constants.JpaConst;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 問題番号のDTOモデル
@@ -14,6 +19,11 @@ import constants.JpaConst;
  */
 @Table(name = JpaConst.TABLE_NUM)
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class WorkNumber {
 
     /**

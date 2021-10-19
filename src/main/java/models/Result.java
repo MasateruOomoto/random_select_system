@@ -50,7 +50,7 @@ public class Result {
      * 回答フラグ
      */
     @Column(name = JpaConst.RES_COL_ANSWER_FLG)
-    private Boolean answerFlag;
+    private Integer answerFlag;
 
     /**
      * 閲覧回数

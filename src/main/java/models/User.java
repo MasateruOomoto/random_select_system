@@ -52,5 +52,5 @@ public class User {
      * 管理者権限があるかどうか(生徒:0, 教師:1)
      */
     @Column(name = JpaConst.USE_COL_ADMIN_FLG, nullable = false)
-    private Boolean adminFlag;
+    private Integer adminFlag;
 }
