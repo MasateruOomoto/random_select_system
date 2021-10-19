@@ -27,6 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class User {
+
     /**
      * id
      */
@@ -40,6 +41,12 @@ public class User {
      */
     @Column(name = JpaConst.USE_COL_USER_ID, nullable = false, unique = true)
     private String userId;
+
+    /**
+     * パスワード
+     */
+    @Column(name = JpaConst.USE_COL_PASSWORD, length = 64, nullable = false)
+    private String password;
 
     /**
      * 管理者権限があるかどうか(生徒:0, 教師:1)

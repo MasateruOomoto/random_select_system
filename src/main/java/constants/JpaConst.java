@@ -10,6 +10,7 @@ public interface JpaConst {
     //ユーザーテーブルカラム
     String USE_COL_ID = "id"; //id
     String USE_COL_USER_ID = "user_id"; //ユーザーID
+    String USE_COL_PASSWORD = "password"; //パスワード
     String USE_COL_ADMIN_FLG = "admin_flag"; //管理者権限
 
     int ROLE_ADMIN = 1; //管理者権限ON(管理者)
