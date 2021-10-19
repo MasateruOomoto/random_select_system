@@ -5,6 +5,9 @@ public interface JpaConst {
     //persistence-util名
     String PERSISTENCE_UNIT_NAME = "random_select_system";
 
+    //データ取得件数の最大値
+    int ROW_PER_PAGE = 15; //1ページに表示するレコードの数
+
     //ユーザーテーブル
     String TABLE_USE = "users"; //テーブル名
     //ユーザーテーブルカラム
@@ -57,5 +60,27 @@ public interface JpaConst {
 
     int ROLE_MARU = 0;
     int ROLE_BATSU = 1;
+
+    //Entity名
+    String ENTITY_USER = "user"; //ユーザー
+
+    //JPQL内パラメータ
+    String JPQL_PARM_USERID = "userId"; //ユーザーID
+    String JPQL_PARM_PASSWORD = "password"; //パスワード
+    String JPQL_PARM_USER = "user"; //ユーザー
+
+    //NamedQueryの nameとquery
+    //全ての従業員をidの降順に取得する
+    String Q_USER_GET_ALL = ENTITY_USER + ".getAll"; //name
+    String Q_USER_GET_ALL_DEF = "SELECT e FROM User AS e ORDER BY e.id DESC"; //query
+    //全てのユーザーの件数を取得する
+    String Q_USER_COUNT = ENTITY_USER + ".count";
+    String Q_USER_COUNT_DEF = "SELECT COUNT(e) FROM User AS e";
+    //ユーザーIDとハッシュ化済パスワードを条件に未削除の従業員を取得する
+    String Q_USER_GET_BY_USERID_AND_PASS = ENTITY_USER + ".getByUserIdAndPass";
+    String Q_USER_GET_BY_USERID_AND_PASS_DEF = "SELECT e FROM User AS e WHERE e.userId = :" + JPQL_PARM_USERID + " AND e.password = :" + JPQL_PARM_PASSWORD;
+    //指定したユーザーIDを保持するユーザーの件数を取得する
+    String Q_USER_COUNT_RESISTERED_BY_USERID = ENTITY_USER + ".countRegisteredByUserId";
+    String Q_USER_COUNT_RESISTERED_BY_USERID_DEF = "SELECT COUNT(e) FROM User AS e WHERE e.userId = :" + JPQL_PARM_USERID;
 
 }
