@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import constants.JpaConst;
@@ -19,6 +21,21 @@ import lombok.Setter;
  */
 
 @Table(name = JpaConst.TABLE_USE)
+
+@NamedQueries({
+    @NamedQuery(
+            name = JpaConst.Q_USER_GET_ALL,
+            query = JpaConst.Q_USER_GET_ALL_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_USER_COUNT,
+            query = JpaConst.Q_USER_COUNT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_USER_COUNT_RESISTERED_BY_USERID,
+            query = JpaConst.Q_USER_COUNT_RESISTERED_BY_USERID_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_USER_GET_BY_USERID_AND_PASS,
+            query = JpaConst.Q_USER_GET_BY_USERID_AND_PASS_DEF)
+})
 
 
 @Getter

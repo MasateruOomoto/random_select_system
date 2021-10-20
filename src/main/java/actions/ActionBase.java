@@ -15,6 +15,7 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.PropertyConst;
 
+
 /**
  * 各Actionクラスの親クラス。共通処理を行う。
  *
@@ -52,6 +53,7 @@ public abstract class ActionBase {
      * @throws ServletException
      * @throws IOException
      */
+
     protected void invoke()
             throws ServletException, IOException {
 
@@ -76,7 +78,6 @@ public abstract class ActionBase {
         }
 
     }
-
     /**
      * 指定されたjspの呼び出しを行う
      * @param target 遷移先jsp画面のファイル名(拡張子を含まない)

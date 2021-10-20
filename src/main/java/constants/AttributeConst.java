@@ -17,8 +17,8 @@ public enum AttributeConst {
     TOKEN("_token"),
     ERR("errors"),
 
-    //ログイン中の従業員
-    LOGIN_USE("login_user"),
+    //ログイン中のユーザー
+    LOGIN_USER("login_user"),
 
     //ログイン画面
     LOGIN_ERR("loginError"),
@@ -27,11 +27,11 @@ public enum AttributeConst {
     //ユーザー管理
     USER("user"),
     USERS("USERS"),
-    USE_COUNT("user_count"),
-    USE_ID("id"),
-    USE_USER_ID("user_id"),
-    USE_PASS("password"),
-    USE_ADMIN_FLAG("admin_flag"),
+    USER_COUNT("user_count"),
+    USER_ID("id"),
+    USER_USER_ID("user_id"),
+    USER_PASS("password"),
+    USER_ADMIN_FLAG("admin_flag"),
 
     //管理者フラグ
     ROLE_ADMIN(1),
