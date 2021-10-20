@@ -174,4 +174,47 @@ public class UserAction extends ActionBase {
 
     }
 
+    /**
+     * 更新を行う
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void update() throws ServletException, IOException {
+
+        //CSRF対策 tokenのチェック
+        if (checkToken()) {
+            //パラメータの値を元にユーザー情報のインスタンスを作成する
+            UserView uv = new UserView(
+                    toNumber(getRequestParam(AttributeConst.USER_ID)),
+                    getRequestParam(AttributeConst.USER_USER_ID),
+                    getRequestParam(AttributeConst.USER_PASS),
+                    toNumber(getRequestParam(AttributeConst.USER_ADMIN_FLG)));
+
+            //アプリケーションスコープからpepper文字列を取得
+            String pepper = getContextScope(PropertyConst.PEPPER);
+
+            //ユーザー情報更新
+            List<String> errors = service.update(uv, pepper);
+
+            if (errors.size() > 0) {
+                //更新中にエラーが発生した場合
+
+                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                putRequestScope(AttributeConst.USER, uv); //入力されたユーザー情報
+                putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
+
+                //編集画面を再表示
+                forward(ForwardConst.FW_USER_EDIT);
+            } else {
+                //更新中にエラーがなかった場合
+
+                //セッションに更新完了のフラッシュメッセージを設定
+                putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
+
+                //一覧画面にリダイレクト
+                redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+            }
+        }
+    }
+
 }
