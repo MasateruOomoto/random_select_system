@@ -136,10 +136,42 @@ public class UserAction extends ActionBase {
         //idを条件にユーザーデータを取得する
         UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
 
+        if (uv == null) {
+
+            //データが取得できなかった場合はエラー画面を表示
+            forward(ForwardConst.FW_ERR_UNKNOWN);
+            return;
+        }
+
         putRequestScope(AttributeConst.USER, uv); //取得したユーザー情報
 
         //詳細画面を表示
         forward(ForwardConst.FW_USER_SHOW);
+    }
+
+    /**
+     * 編集画面を表示する
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void edit() throws ServletException, IOException {
+
+        //idを条件にユーザーデータを取得する
+        UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
+
+        if (uv == null) {
+
+            //データが取得できなかった場合はエラー画面を表示
+            forward(ForwardConst.FW_ERR_UNKNOWN);
+            return;
+        }
+
+        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+        putRequestScope(AttributeConst.USER, uv); //取得した従業員情報
+
+        //編集画面を表示する
+        forward(ForwardConst.FW_USER_EDIT);
+
     }
 
 }
