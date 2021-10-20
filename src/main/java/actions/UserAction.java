@@ -126,4 +126,20 @@ public class UserAction extends ActionBase {
         }
     }
 
+    /**
+     * 詳細画面を表示する
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void show() throws ServletException, IOException {
+
+        //idを条件にユーザーデータを取得する
+        UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
+
+        putRequestScope(AttributeConst.USER, uv); //取得したユーザー情報
+
+        //詳細画面を表示
+        forward(ForwardConst.FW_USER_SHOW);
+    }
+
 }
