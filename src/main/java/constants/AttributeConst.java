@@ -31,7 +31,7 @@ public enum AttributeConst {
     USER_ID("id"),
     USER_USER_ID("user_id"),
     USER_PASS("password"),
-    USER_ADMIN_FLAG("admin_flag"),
+    USER_ADMIN_FLG("admin_flag"),
 
     //管理者フラグ
     ROLE_ADMIN(1),

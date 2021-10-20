@@ -32,6 +32,7 @@ public enum ForwardConst {
     FW_USER_SHOW("users/show"),
     FW_USER_NEW("users/new"),
     FW_USER_EDIT("users/edit"),
+    FW_USER_TRY("users/try"),
 
     /**
      * 文字列
