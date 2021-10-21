@@ -18,6 +18,9 @@ body {
 }
 
 h1 {
+    width: 94%;
+    padding-top: 17px;
+    padding-left: 3%;
     font-size: 24px;
     display: inline;
 }
