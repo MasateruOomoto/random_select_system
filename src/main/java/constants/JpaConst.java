@@ -65,6 +65,7 @@ public interface JpaConst {
     String ENTITY_USER = "user"; //ユーザー
 
     //JPQL内パラメータ
+    String JPQL_PARM_ID = "id"; //id
     String JPQL_PARM_USERID = "userId"; //ユーザーID
     String JPQL_PARM_PASSWORD = "password"; //パスワード
     String JPQL_PARM_USER = "user"; //ユーザー
@@ -82,5 +83,8 @@ public interface JpaConst {
     //指定したユーザーIDを保持するユーザーの件数を取得する
     String Q_USER_COUNT_RESISTERED_BY_USERID = ENTITY_USER + ".countRegisteredByUserId";
     String Q_USER_COUNT_RESISTERED_BY_USERID_DEF = "SELECT COUNT(e) FROM User AS e WHERE e.userId = :" + JPQL_PARM_USERID;
+    //ユーザーIDを元にユーザーを削除する
+    String Q_USER_DELETE = ENTITY_USER + ".deleteById";
+    String Q_USER_DELETE_INFOMATION = "DELETE FROM User AS e WHERE e.id = :" + JPQL_PARM_ID;
 
 }

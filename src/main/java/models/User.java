@@ -34,8 +34,12 @@ import lombok.Setter;
             query = JpaConst.Q_USER_COUNT_RESISTERED_BY_USERID_DEF),
     @NamedQuery(
             name = JpaConst.Q_USER_GET_BY_USERID_AND_PASS,
-            query = JpaConst.Q_USER_GET_BY_USERID_AND_PASS_DEF)
+            query = JpaConst.Q_USER_GET_BY_USERID_AND_PASS_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_USER_DELETE,
+            query = JpaConst.Q_USER_DELETE_INFOMATION)
 })
+
 
 
 @Getter

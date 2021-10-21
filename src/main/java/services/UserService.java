@@ -167,9 +167,10 @@ public class UserService extends ServiceBase {
      * @param id
      */
     public void destroy(Integer id) {
-
-        //idを条件に登録済みの従業員情報を取得する
-        UserView savedUser = findOne(id);
+        //データの削除を行う
+        em.createQuery("DELETE FROM User AS e WHERE e.id = :name")
+        .setParameter("name", id)
+        .executeUpdate();
     }
 
     /**

@@ -217,4 +217,25 @@ public class UserAction extends ActionBase {
         }
     }
 
+    /**
+     * 削除を行う
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void destroy() throws ServletException, IOException {
+
+        //CSRF対策 tokenのチェック
+        if (checkToken()) {
+
+            //idを条件に従業員データを削除する
+            service.destroy(toNumber(getRequestParam(AttributeConst.USER_ID)));
+
+            //セッションに削除完了のフラッシュメッセージを設定
+            putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
+
+            //一覧画面にリダイレクト
+            redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+        }
+    }
+
 }
