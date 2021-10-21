@@ -42,27 +42,31 @@ public class UserAction extends ActionBase {
      */
     public void index() throws ServletException, IOException {
 
-        //指定されたページ数の一覧画面に表示するデータを取得
-        int page = getPage();
-        List<UserView> users = service.getPerPage(page);
+        //管理者かどうかのチェック
+        if(checkAdmin()) {
+        
+            //指定されたページ数の一覧画面に表示するデータを取得
+            int page = getPage();
+            List<UserView> users = service.getPerPage(page);
 
-        //全てのユーザーデータの件数を取得
-        long userCount = service.countAll();
-
-        putRequestScope(AttributeConst.USERS, users); //取得したユーザーデータ
-        putRequestScope(AttributeConst.USER_COUNT, userCount); //全てのユーザーデータの件数
-        putRequestScope(AttributeConst.PAGE, page); //ページ数
-        putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
-
-        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
-        String flush = getSessionScope(AttributeConst.FLUSH);
-        if (flush != null) {
-            putRequestScope(AttributeConst.FLUSH, flush);
-            removeSessionScope(AttributeConst.FLUSH);
+            //全てのユーザーデータの件数を取得
+            long userCount = service.countAll();
+    
+            putRequestScope(AttributeConst.USERS, users); //取得したユーザーデータ
+            putRequestScope(AttributeConst.USER_COUNT, userCount); //全てのユーザーデータの件数
+            putRequestScope(AttributeConst.PAGE, page); //ページ数
+            putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
+    
+            //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
+            String flush = getSessionScope(AttributeConst.FLUSH);
+            if (flush != null) {
+                putRequestScope(AttributeConst.FLUSH, flush);
+                removeSessionScope(AttributeConst.FLUSH);
+            }
+    
+            //一覧画面を表示
+            forward(ForwardConst.FW_USER_INDEX);
         }
-
-        //一覧画面を表示
-        forward(ForwardConst.FW_USER_INDEX);
 
     }
 
@@ -72,12 +76,16 @@ public class UserAction extends ActionBase {
      * @throws IOException
      */
     public void entryNew() throws ServletException, IOException {
+        
+        //管理者かどうかのチェック
+        if(checkAdmin()) {
 
-        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-        putRequestScope(AttributeConst.USER, new UserView()); //空のユーザーインスタンス
-
-        //新規登録画面を表示
-        forward(ForwardConst.FW_USER_NEW);
+            putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+            putRequestScope(AttributeConst.USER, new UserView()); //空のユーザーインスタンス
+    
+            //新規登録画面を表示
+            forward(ForwardConst.FW_USER_NEW);
+        }
     }
 
     /**
@@ -88,7 +96,7 @@ public class UserAction extends ActionBase {
     public void create() throws ServletException, IOException {
 
         //CSRF対策 tokenのチェック
-        if (checkToken()) {
+        if (checkToken() && checkAdmin()) {
 
             //パラメータの値を元にユーザー情報のインスタンスを作成する
             UserView uv = new UserView(
@@ -132,21 +140,25 @@ public class UserAction extends ActionBase {
      * @throws IOException
      */
     public void show() throws ServletException, IOException {
+        
+        //管理者かどうかのチェック
+        if(checkAdmin()) {
 
-        //idを条件にユーザーデータを取得する
-        UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
-
-        if (uv == null) {
-
-            //データが取得できなかった場合はエラー画面を表示
-            forward(ForwardConst.FW_ERR_UNKNOWN);
-            return;
+            //idを条件にユーザーデータを取得する
+            UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
+    
+            if (uv == null) {
+    
+                //データが取得できなかった場合はエラー画面を表示
+                forward(ForwardConst.FW_ERR_UNKNOWN);
+                return;
+            }
+    
+            putRequestScope(AttributeConst.USER, uv); //取得したユーザー情報
+    
+            //詳細画面を表示
+            forward(ForwardConst.FW_USER_SHOW);
         }
-
-        putRequestScope(AttributeConst.USER, uv); //取得したユーザー情報
-
-        //詳細画面を表示
-        forward(ForwardConst.FW_USER_SHOW);
     }
 
     /**
@@ -155,22 +167,26 @@ public class UserAction extends ActionBase {
      * @throws IOException
      */
     public void edit() throws ServletException, IOException {
+        
+      //管理者かどうかのチェック
+        if(checkAdmin()) {
 
-        //idを条件にユーザーデータを取得する
-        UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
-
-        if (uv == null) {
-
-            //データが取得できなかった場合はエラー画面を表示
-            forward(ForwardConst.FW_ERR_UNKNOWN);
-            return;
+            //idを条件にユーザーデータを取得する
+            UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
+    
+            if (uv == null) {
+    
+                //データが取得できなかった場合はエラー画面を表示
+                forward(ForwardConst.FW_ERR_UNKNOWN);
+                return;
+            }
+    
+            putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+            putRequestScope(AttributeConst.USER, uv); //取得した従業員情報
+    
+            //編集画面を表示する
+            forward(ForwardConst.FW_USER_EDIT);
         }
-
-        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-        putRequestScope(AttributeConst.USER, uv); //取得した従業員情報
-
-        //編集画面を表示する
-        forward(ForwardConst.FW_USER_EDIT);
 
     }
 
@@ -180,39 +196,43 @@ public class UserAction extends ActionBase {
      * @throws IOException
      */
     public void update() throws ServletException, IOException {
+        
+        //管理者かどうかのチェック
+        if(checkAdmin()) {
 
-        //CSRF対策 tokenのチェック
-        if (checkToken()) {
-            //パラメータの値を元にユーザー情報のインスタンスを作成する
-            UserView uv = new UserView(
-                    toNumber(getRequestParam(AttributeConst.USER_ID)),
-                    getRequestParam(AttributeConst.USER_USER_ID),
-                    getRequestParam(AttributeConst.USER_PASS),
-                    toNumber(getRequestParam(AttributeConst.USER_ADMIN_FLG)));
-
-            //アプリケーションスコープからpepper文字列を取得
-            String pepper = getContextScope(PropertyConst.PEPPER);
-
-            //ユーザー情報更新
-            List<String> errors = service.update(uv, pepper);
-
-            if (errors.size() > 0) {
-                //更新中にエラーが発生した場合
-
-                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.USER, uv); //入力されたユーザー情報
-                putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
-
-                //編集画面を再表示
-                forward(ForwardConst.FW_USER_EDIT);
-            } else {
-                //更新中にエラーがなかった場合
-
-                //セッションに更新完了のフラッシュメッセージを設定
-                putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
-
-                //一覧画面にリダイレクト
-                redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+            //CSRF対策 tokenのチェック
+            if (checkToken()) {
+                //パラメータの値を元にユーザー情報のインスタンスを作成する
+                UserView uv = new UserView(
+                        toNumber(getRequestParam(AttributeConst.USER_ID)),
+                        getRequestParam(AttributeConst.USER_USER_ID),
+                        getRequestParam(AttributeConst.USER_PASS),
+                        toNumber(getRequestParam(AttributeConst.USER_ADMIN_FLG)));
+    
+                //アプリケーションスコープからpepper文字列を取得
+                String pepper = getContextScope(PropertyConst.PEPPER);
+    
+                //ユーザー情報更新
+                List<String> errors = service.update(uv, pepper);
+    
+                if (errors.size() > 0) {
+                    //更新中にエラーが発生した場合
+    
+                    putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                    putRequestScope(AttributeConst.USER, uv); //入力されたユーザー情報
+                    putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
+    
+                    //編集画面を再表示
+                    forward(ForwardConst.FW_USER_EDIT);
+                } else {
+                    //更新中にエラーがなかった場合
+    
+                    //セッションに更新完了のフラッシュメッセージを設定
+                    putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
+    
+                    //一覧画面にリダイレクト
+                    redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+                }
             }
         }
     }
@@ -225,7 +245,7 @@ public class UserAction extends ActionBase {
     public void destroy() throws ServletException, IOException {
 
         //CSRF対策 tokenのチェック
-        if (checkToken()) {
+        if (checkToken() && checkAdmin()) {
 
             //idを条件に従業員データを削除する
             service.destroy(toNumber(getRequestParam(AttributeConst.USER_ID)));
@@ -236,6 +256,30 @@ public class UserAction extends ActionBase {
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
         }
+    }
+
+    /**
+     * ログイン中の従業員が管理者かどうかチェックし、管理者でなければエラー画面を表示
+     * true: 管理者 false: 管理者ではない
+     * @throws ServletException
+     * @throws IOException
+     */
+    private boolean checkAdmin() throws ServletException, IOException {
+
+        //セッションからログイン中の従業員情報を取得
+        UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
+
+        //管理者でなければエラー画面を表示
+        if (uv.getAdminFlag() != AttributeConst.ROLE_ADMIN.getIntegerValue()) {
+
+            forward(ForwardConst.FW_ERR_UNKNOWN);
+            return false;
+
+        } else {
+
+            return true;
+        }
+
     }
 
 }
