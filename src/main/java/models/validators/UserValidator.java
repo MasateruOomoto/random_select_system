@@ -51,7 +51,7 @@ public class UserValidator {
 
         //入力値がなければエラーメッセージを返却
         if (userId == null || userId.equals("")) {
-            return MessageConst.E_NOEMP_USERID.getMessage();
+            return MessageConst.E_NOUSER_USERID.getMessage();
         }
 
         if (userDuplicateCheckFlag) {

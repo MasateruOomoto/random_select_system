@@ -18,8 +18,11 @@ public enum MessageConst {
 
     //バリデーション
     E_NOPASSWORD("パスワードを入力してください。"),
-    E_NOEMP_USERID("ユーザーIDを入力してください。"),
-    E_USER_USERID_EXIST("入力されたユーザーIDの情報は既に存在しています。");
+    E_NOUSER_USERID("ユーザーIDを入力してください。"),
+    E_USER_USERID_EXIST("入力されたユーザーIDの情報は既に存在しています。"),
+
+    E_NOWORKBOOK_NAME("問題集名を入力してください。"),
+    E_WORKBOOK_NAME_EXIST("入力された問題集名の情報はすでに存在しています。");
 
     /**
      * 文字列

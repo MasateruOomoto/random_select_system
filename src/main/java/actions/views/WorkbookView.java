@@ -28,6 +28,6 @@ public class WorkbookView {
     /**
      * 問題集名
      */
-    private Integer WorkbookName;
+    private String workbookName;
 
 }

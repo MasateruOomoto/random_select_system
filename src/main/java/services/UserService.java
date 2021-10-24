@@ -56,7 +56,7 @@ public class UserService extends ServiceBase {
 
             //ユーザーIDとハッシュ化済パスワードを条件に未削除の従業員を1件取得する
             u = em.createNamedQuery(JpaConst.Q_USER_GET_BY_USERID_AND_PASS, User.class)
-                    .setParameter(JpaConst.JPQL_PARM_USERID, userId)
+                    .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                     .setParameter(JpaConst.JPQL_PARM_PASSWORD, pass)
                     .getSingleResult();
 
@@ -85,8 +85,8 @@ public class UserService extends ServiceBase {
     public long countByCode(String userId) {
 
         //指定したユーザーIDを保持するユーザーの件数を取得する
-        long users_count = (long) em.createNamedQuery(JpaConst.Q_USER_COUNT_RESISTERED_BY_USERID, Long.class)
-                .setParameter(JpaConst.JPQL_PARM_USERID, userId)
+        long users_count = (long) em.createNamedQuery(JpaConst.Q_USER_COUNT_RESISTERED_BY_USER_ID, Long.class)
+                .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                 .getSingleResult();
         return users_count;
     }
@@ -167,10 +167,17 @@ public class UserService extends ServiceBase {
      * @param id
      */
     public void destroy(Integer id) {
+
+        // トランザクション開始
+        em.getTransaction().begin();
+
         //データの削除を行う
-        em.createQuery("DELETE FROM User AS e WHERE e.id = :name")
-        .setParameter("name", id)
-        .executeUpdate();
+        int delete = em.createNamedQuery(JpaConst.Q_USER_DELETE)
+                .setParameter(JpaConst.JPQL_PARM_ID, id)
+                .executeUpdate();
+
+        // トランザクション終了
+        em.getTransaction().commit();
     }
 
     /**

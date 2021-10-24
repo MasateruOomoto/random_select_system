@@ -41,17 +41,18 @@ public enum AttributeConst {
     //問題集管理
     WORKBOOK("workbook"),
     WORKBOOKS("workbooks"),
-    WOR_ID("id"),
-    WOR_KAMOKU_FLAG("kamoku_flag"),
-    WOR_MONDAI_NAME("mondai_name"),
+    WORKBOOK_COUNT("workbook_count"),
+    WORKBOOK_ID("id"),
+    WORKBOOK_FLAG("workbook_flag"),
+    WORKBOOK_NAME("workbook_name"),
 
     //科目名フラグ
-    ROLE_MATH("1"),
-    ROLE_LANGUAGE("2"),
-    ROLE_ENGLISH("3"),
-    ROLE_CHEMISTRY("4"),
-    ROLE_PHYSICS("5"),
-    ROLE_SOCIETY("6"),
+    ROLE_MATH("1"), //数学
+    ROLE_LANGUAGE("2"), //国語
+    ROLE_ENGLISH("3"), //英語
+    ROLE_CHEMISTRY("4"), //化学
+    ROLE_PHYSICS("5"), //物理
+    ROLE_SOCIETY("6"), //社会
 
     //チャプター管理
     CHAPTER("chapter"),

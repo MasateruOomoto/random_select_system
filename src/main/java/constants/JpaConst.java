@@ -23,15 +23,8 @@ public interface JpaConst {
     String TABLE_WOR = "workbooks"; //テーブル名
     //問題集テーブルカラム
     String WOR_COL_ID = "id"; //id
-    String WOR_COL_KAMOKU_FLG = "kamoku_flag"; //科目の種類
-    String WOR_COL_MONDAI_NAME = "mondai_name"; //問題集の名前
-
-    int ROLE_MATH = 1;
-    int ROLE_LANGUAGE = 2;
-    int ROLE_ENGLISH = 3;
-    int ROLE_CHEMISTRY = 4;
-    int ROLE_PHYSICS = 5;
-    int ROLE_SOCIETY = 6;
+    String WOR_COL_WORKBOOK_FLG = "workbook_flag"; //科目の種類
+    String WOR_COL_WORKBOOK_NAME = "workbook_name"; //問題集の名前
 
     //チャプターテーブル
     String TABLE_CHA = "chapters"; // テーブル名
@@ -63,28 +56,48 @@ public interface JpaConst {
 
     //Entity名
     String ENTITY_USER = "user"; //ユーザー
+    String ENTITY_WOR = "workbook"; //問題集
 
     //JPQL内パラメータ
     String JPQL_PARM_ID = "id"; //id
-    String JPQL_PARM_USERID = "userId"; //ユーザーID
+    String JPQL_PARM_USER_ID = "userId"; //ユーザーID
     String JPQL_PARM_PASSWORD = "password"; //パスワード
     String JPQL_PARM_USER = "user"; //ユーザー
 
+    String JPQL_PARM_WORKBOOK_NAME = "workbookName"; //問題集名
+
     //NamedQueryの nameとquery
-    //全ての従業員をidの降順に取得する
+    //全てのユーザーをidの降順に取得する
     String Q_USER_GET_ALL = ENTITY_USER + ".getAll"; //name
     String Q_USER_GET_ALL_DEF = "SELECT e FROM User AS e ORDER BY e.id DESC"; //query
     //全てのユーザーの件数を取得する
     String Q_USER_COUNT = ENTITY_USER + ".count";
     String Q_USER_COUNT_DEF = "SELECT COUNT(e) FROM User AS e";
-    //ユーザーIDとハッシュ化済パスワードを条件に未削除の従業員を取得する
+    //ユーザーIDとハッシュ化済パスワードを条件に未削除のユーザーを取得する
     String Q_USER_GET_BY_USERID_AND_PASS = ENTITY_USER + ".getByUserIdAndPass";
-    String Q_USER_GET_BY_USERID_AND_PASS_DEF = "SELECT e FROM User AS e WHERE e.userId = :" + JPQL_PARM_USERID + " AND e.password = :" + JPQL_PARM_PASSWORD;
+    String Q_USER_GET_BY_USERID_AND_PASS_DEF = "SELECT e FROM User AS e WHERE e.userId = :" + JPQL_PARM_USER_ID + " AND e.password = :" + JPQL_PARM_PASSWORD;
     //指定したユーザーIDを保持するユーザーの件数を取得する
-    String Q_USER_COUNT_RESISTERED_BY_USERID = ENTITY_USER + ".countRegisteredByUserId";
-    String Q_USER_COUNT_RESISTERED_BY_USERID_DEF = "SELECT COUNT(e) FROM User AS e WHERE e.userId = :" + JPQL_PARM_USERID;
+    String Q_USER_COUNT_RESISTERED_BY_USER_ID = ENTITY_USER + ".countRegisteredByUserId";
+    String Q_USER_COUNT_RESISTERED_BY_USER_ID_DEF = "SELECT COUNT(e) FROM User AS e WHERE e.userId = :" + JPQL_PARM_USER_ID;
     //ユーザーIDを元にユーザーを削除する
     String Q_USER_DELETE = ENTITY_USER + ".deleteById";
-    String Q_USER_DELETE_INFOMATION = "DELETE FROM User AS e WHERE e.id = :" + JPQL_PARM_ID;
+    String Q_USER_INFOMATION_DELETE = "DELETE FROM User AS e WHERE e.id = :" + JPQL_PARM_ID;
+
+    //すべての問題集をidの降順に取得する
+    String Q_WOR_GET_ALL = ENTITY_WOR + "getAll";
+    String Q_WOR_GET_ALL_DEF = "SELECT e FROM Workbook AS e ORDER BY e.id DESC";
+    //全ての問題集の件数を取得する
+    String Q_WOR_COUNT = ENTITY_WOR + ".count";
+    String Q_WOR_COUNT_DEF = "SELECT COUNT(e) FROM Workbook AS e";
+    //問題集IDを条件に未削除の問題集を取得する
+    String Q_WOR_GET_BY_WOR_ID = ENTITY_WOR + ".getByWorId";
+    String Q_WOR_GET_BY_WOR_ID_DEF = "SELECT e FROM Workbook AS e WHERE e.Id = :" + JPQL_PARM_ID;
+    //指定した問題集名を保持する問題集の件数を取得する
+    String Q_WOR_COUNT_RESISTERED_BY_WOR_NAME = ENTITY_USER + ".countRegisteredByWorkbookId";
+    String Q_WOR_COUNT_RESISTERED_BY_WOR_NAME_DEF = "SELECT COUNT(e) FROM Workbook AS e WHERE e.workbookName = :" + JPQL_PARM_WORKBOOK_NAME;
+    //問題集IDを元に問題集を削除する
+    String Q_WOR_DELETE = ENTITY_WOR + ".deleteById";
+    String Q_WOR_INFOMATION_DELETE = "DELETE FROM Workbook AS e WHERE e.id = :" + JPQL_PARM_ID;
+
 
 }

@@ -30,14 +30,14 @@ import lombok.Setter;
             name = JpaConst.Q_USER_COUNT,
             query = JpaConst.Q_USER_COUNT_DEF),
     @NamedQuery(
-            name = JpaConst.Q_USER_COUNT_RESISTERED_BY_USERID,
-            query = JpaConst.Q_USER_COUNT_RESISTERED_BY_USERID_DEF),
+            name = JpaConst.Q_USER_COUNT_RESISTERED_BY_USER_ID,
+            query = JpaConst.Q_USER_COUNT_RESISTERED_BY_USER_ID_DEF),
     @NamedQuery(
             name = JpaConst.Q_USER_GET_BY_USERID_AND_PASS,
             query = JpaConst.Q_USER_GET_BY_USERID_AND_PASS_DEF),
     @NamedQuery(
             name = JpaConst.Q_USER_DELETE,
-            query = JpaConst.Q_USER_DELETE_INFOMATION)
+            query = JpaConst.Q_USER_INFOMATION_DELETE)
 })
 
 

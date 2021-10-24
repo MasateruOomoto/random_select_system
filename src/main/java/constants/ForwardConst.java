@@ -6,9 +6,10 @@ public enum ForwardConst {
 
     ACT_TOP("Top"),
     ACT_USER("User"),
+    ACT_WOR("Workbook"),
+    ACT_CHA("Chapter"),
     ACT_AUTH("Auth"),
     ACT_RAN("Random"),
-    ACT_DEP("Department"),
 
     //command
     CMD("command"),
@@ -33,7 +34,12 @@ public enum ForwardConst {
     FW_USER_SHOW("users/show"),
     FW_USER_NEW("users/new"),
     FW_USER_EDIT("users/edit"),
-    FW_USER_TRY("users/try"),
+    FW_USER_DESTROY("users/destroy"),
+
+    FW_WOR_INDEX("workbooks/index"),
+    FW_WOR_NEW("workbooks/new"),
+    FW_WOR_EDIT("workbooks/edit"),
+    FW_WOR_DESTROY("workbooks/destroy"),
 
     /**
      * 文字列

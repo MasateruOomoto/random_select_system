@@ -6,20 +6,20 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import actions.views.UserView;
+import actions.views.WorkbookView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
-import constants.PropertyConst;
-import services.UserService;
+import services.WorkbookService;
 
 /**
- * ユーザーに関わる処理を行うActionクラス
+ * 従業員に関わる処理を行うActionクラス
  *
  */
-public class UserAction extends ActionBase {
+public class WorkbookAction extends ActionBase {
 
-    private UserService service;
+    private WorkbookService service;
 
     /**
      * メソッドを実行する
@@ -27,7 +27,7 @@ public class UserAction extends ActionBase {
     @Override
     public void process() throws ServletException, IOException {
 
-        service = new UserService();
+        service = new WorkbookService();
 
         //メソッドを実行
         invoke();
@@ -47,13 +47,13 @@ public class UserAction extends ActionBase {
 
             //指定されたページ数の一覧画面に表示するデータを取得
             int page = getPage();
-            List<UserView> users = service.getPerPage(page);
+            List<WorkbookView> workbooks = service.getPerPage(page);
 
-            //全てのユーザーデータの件数を取得
-            long userCount = service.countAll();
+            //全ての問題集データの件数を取得
+            long workbookCount = service.countAll();
 
-            putRequestScope(AttributeConst.USERS, users); //取得したユーザーデータ
-            putRequestScope(AttributeConst.USER_COUNT, userCount); //全てのユーザーデータの件数
+            putRequestScope(AttributeConst.WORKBOOKS, workbooks); //取得した問題集データ
+            putRequestScope(AttributeConst.WORKBOOK_COUNT, workbookCount); //全ての問題集データの件数
             putRequestScope(AttributeConst.PAGE, page); //ページ数
             putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
 
@@ -65,7 +65,7 @@ public class UserAction extends ActionBase {
             }
 
             //一覧画面を表示
-            forward(ForwardConst.FW_USER_INDEX);
+            forward(ForwardConst.FW_WOR_INDEX);
         }
 
     }
@@ -81,10 +81,10 @@ public class UserAction extends ActionBase {
         if(checkAdmin()) {
 
             putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-            putRequestScope(AttributeConst.USER, new UserView()); //空のユーザーインスタンス
+            putRequestScope(AttributeConst.WORKBOOK, new WorkbookView()); //空の問題集インスタンス
 
             //新規登録画面を表示
-            forward(ForwardConst.FW_USER_NEW);
+            forward(ForwardConst.FW_WOR_NEW);
         }
     }
 
@@ -98,28 +98,24 @@ public class UserAction extends ActionBase {
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            //パラメータの値を元にユーザー情報のインスタンスを作成する
-            UserView uv = new UserView(
+            //パラメータの値を元に問題集情報のインスタンスを作成する
+            WorkbookView wv = new WorkbookView(
                     null,
-                    getRequestParam(AttributeConst.USER_USER_ID),
-                    getRequestParam(AttributeConst.USER_PASS),
-                    toNumber(getRequestParam(AttributeConst.USER_ADMIN_FLG)));
+                    getRequestParam(AttributeConst.WORKBOOK_FLAG),
+                    getRequestParam(AttributeConst.WORKBOOK_NAME));
 
-            //アプリケーションスコープからpepper文字列を取得
-            String pepper = getContextScope(PropertyConst.PEPPER);
-
-            //ユーザー情報登録
-            List<String> errors = service.create(uv, pepper);
+            //問題集情報登録作業を行い、もしもエラーがあればその件数を返す
+            List<String> errors = service.create(wv);
 
             if (errors.size() > 0) {
                 //登録中にエラーがあった場合
 
                 putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.USER, uv); //入力されたユーザー情報
+                putRequestScope(AttributeConst.WORKBOOK, wv); //入力された問題集情報
                 putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
 
                 //新規登録画面を再表示
-                forward(ForwardConst.FW_USER_NEW);
+                forward(ForwardConst.FW_WOR_NEW);
 
             } else {
                 //登録中にエラーがなかった場合
@@ -128,36 +124,9 @@ public class UserAction extends ActionBase {
                 putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
 
                 //一覧画面にリダイレクト
-                redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+                redirect(ForwardConst.ACT_WOR, ForwardConst.CMD_INDEX);
             }
 
-        }
-    }
-
-    /**
-     * 詳細画面を表示する
-     * @throws ServletException
-     * @throws IOException
-     */
-    public void show() throws ServletException, IOException {
-
-        //管理者かどうかのチェック
-        if(checkAdmin()) {
-
-            //idを条件にユーザーデータを取得する
-            UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
-
-            if (uv == null) {
-
-                //データが取得できなかった場合はエラー画面を表示
-                forward(ForwardConst.FW_ERR_UNKNOWN);
-                return;
-            }
-
-            putRequestScope(AttributeConst.USER, uv); //取得したユーザー情報
-
-            //詳細画面を表示
-            forward(ForwardConst.FW_USER_SHOW);
         }
     }
 
@@ -171,10 +140,10 @@ public class UserAction extends ActionBase {
       //管理者かどうかのチェック
         if(checkAdmin()) {
 
-            //idを条件にユーザーデータを取得する
-            UserView uv = service.findOne(toNumber(getRequestParam(AttributeConst.USER_ID)));
+            //idを条件に問題集データを取得する
+            WorkbookView wv = service.findOne(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
 
-            if (uv == null) {
+            if (wv == null) {
 
                 //データが取得できなかった場合はエラー画面を表示
                 forward(ForwardConst.FW_ERR_UNKNOWN);
@@ -182,10 +151,10 @@ public class UserAction extends ActionBase {
             }
 
             putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-            putRequestScope(AttributeConst.USER, uv); //取得したユーザー情報
+            putRequestScope(AttributeConst.WORKBOOK, wv); //取得した問題集情報
 
             //編集画面を表示する
-            forward(ForwardConst.FW_USER_EDIT);
+            forward(ForwardConst.FW_WOR_EDIT);
         }
 
     }
@@ -202,28 +171,24 @@ public class UserAction extends ActionBase {
 
             //CSRF対策 tokenのチェック
             if (checkToken()) {
-                //パラメータの値を元にユーザー情報のインスタンスを作成する
-                UserView uv = new UserView(
-                        toNumber(getRequestParam(AttributeConst.USER_ID)),
-                        getRequestParam(AttributeConst.USER_USER_ID),
-                        getRequestParam(AttributeConst.USER_PASS),
-                        toNumber(getRequestParam(AttributeConst.USER_ADMIN_FLG)));
+                //パラメータの値を元に問題集情報のインスタンスを作成する
+                WorkbookView wv = new WorkbookView(
+                        toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)),
+                        getRequestParam(AttributeConst.WORKBOOK_FLAG),
+                            getRequestParam(AttributeConst.WORKBOOK_NAME));
 
-                //アプリケーションスコープからpepper文字列を取得
-                String pepper = getContextScope(PropertyConst.PEPPER);
-
-                //ユーザー情報更新
-                List<String> errors = service.update(uv, pepper);
+                //問題集情報更新
+                List<String> errors = service.update(wv);
 
                 if (errors.size() > 0) {
                     //更新中にエラーが発生した場合
 
                     putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                    putRequestScope(AttributeConst.USER, uv); //入力されたユーザー情報
+                    putRequestScope(AttributeConst.USER, wv); //入力されたユーザー情報
                     putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
 
                     //編集画面を再表示
-                    forward(ForwardConst.FW_USER_EDIT);
+                    forward(ForwardConst.FW_WOR_EDIT);
                 } else {
                     //更新中にエラーがなかった場合
 
@@ -231,7 +196,7 @@ public class UserAction extends ActionBase {
                     putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
 
                     //一覧画面にリダイレクト
-                    redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+                    redirect(ForwardConst.ACT_WOR, ForwardConst.CMD_INDEX);
                 }
             }
         }
@@ -247,26 +212,26 @@ public class UserAction extends ActionBase {
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            //idを条件にユーザーデータを削除する
-            service.destroy(toNumber(getRequestParam(AttributeConst.USER_ID)));
+            //idを条件に問題集データを削除する
+            service.destroy(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
 
             //一覧画面にリダイレクト
-            redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
+            redirect(ForwardConst.ACT_WOR, ForwardConst.CMD_INDEX);
         }
     }
 
     /**
-     * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示
+     * ログイン中の従業員が管理者かどうかチェックし、管理者でなければエラー画面を表示
      * true: 管理者 false: 管理者ではない
      * @throws ServletException
      * @throws IOException
      */
     private boolean checkAdmin() throws ServletException, IOException {
 
-        //セッションからログイン中のユーザー情報を取得
+        //セッションからログイン中の従業員情報を取得
         UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
 
         //管理者でなければエラー画面を表示
@@ -279,7 +244,6 @@ public class UserAction extends ActionBase {
 
             return true;
         }
-
     }
 
 }
