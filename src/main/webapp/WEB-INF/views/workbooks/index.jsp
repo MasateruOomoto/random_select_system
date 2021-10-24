@@ -49,9 +49,10 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a href="<c:url value='?action=${actCha}&command=${commIdx}&id=${workbook.id}' />"><c:out value="${workbook.workbookName}" /></a>
+
+                            <a href="<c:url value='?action=${actCha}&command=${commIdx}&workbook_id=${workbook.id}' />"><c:out value="${workbook.workbookName}" /></a>
                         </td>
-                        <td><a href="<c:url value='?action=${actWor}&command=${commEdit}&id=${workbook.id}' />">編集する</a></td>
+                        <td><a href="<c:url value='?action=${actWor}&command=${commEdit}&workbook_id=${workbook.id}' />">編集する</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -70,7 +71,7 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='?action=${actWor}&command=${commNew}' />">新規問題集の登録</a></p>
+        <p><a href="<c:url value='?action=${actCha}&command=${commNew}&workbook_id="${workbook.id}' />">新規問題集の登録</a></p>
 
     </c:param>
 </c:import>

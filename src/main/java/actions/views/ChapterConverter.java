@@ -19,7 +19,7 @@ public class ChapterConverter {
 
         return new Chapter(
                 cv.getId(),
-                cv.getMondaiId(),
+                cv.getWorkbookId(),
                 cv.getChapterName(),
                 cv.getSort());
     }
@@ -37,7 +37,7 @@ public class ChapterConverter {
 
         return new ChapterView(
                 c.getId(),
-                c.getMondaiId(),
+                c.getWorkbookId(),
                 c.getChapterName(),
                 c.getSort());
     }
@@ -81,7 +81,7 @@ public class ChapterConverter {
      */
     public static void copyViewToModel(Chapter c, ChapterView cv) {
         c.setId(cv.getId());
-        c.setMondaiId(cv.getMondaiId());
+        c.setWorkbookId(cv.getWorkbookId());
         c.setChapterName(cv.getChapterName());
         c.setSort(cv.getSort());
     }
@@ -94,7 +94,7 @@ public class ChapterConverter {
      */
     public static void copyModelToView(Chapter c, ChapterView cv) {
         cv.setId(c.getId());
-        cv.setMondaiId(c.getMondaiId());
+        cv.setWorkbookId(c.getWorkbookId());
         cv.setChapterName(c.getChapterName());
         cv.setSort(c.getSort());
     }

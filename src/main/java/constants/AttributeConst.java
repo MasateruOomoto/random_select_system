@@ -42,7 +42,7 @@ public enum AttributeConst {
     WORKBOOK("workbook"),
     WORKBOOKS("workbooks"),
     WORKBOOK_COUNT("workbook_count"),
-    WORKBOOK_ID("id"),
+    WORKBOOK_ID("workbook_id"),
     WORKBOOK_FLAG("workbook_flag"),
     WORKBOOK_NAME("workbook_name"),
 
@@ -57,7 +57,9 @@ public enum AttributeConst {
     //チャプター管理
     CHAPTER("chapter"),
     CHAPTERS("chapters"),
-    CHA_ID("id");
+    CHAPTER_NAME("chapter_name"),
+    CHAPTER_ID("chapter_id"),
+    CHAPTER_COUNT("chapter_count");
 
     private final String text;
     private final Integer i;

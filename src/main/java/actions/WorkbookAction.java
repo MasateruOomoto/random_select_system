@@ -14,7 +14,7 @@ import constants.MessageConst;
 import services.WorkbookService;
 
 /**
- * 従業員に関わる処理を行うActionクラス
+ * 問題集に関わる処理を行うActionクラス
  *
  */
 public class WorkbookAction extends ActionBase {
@@ -224,14 +224,14 @@ public class WorkbookAction extends ActionBase {
     }
 
     /**
-     * ログイン中の従業員が管理者かどうかチェックし、管理者でなければエラー画面を表示
+     * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示
      * true: 管理者 false: 管理者ではない
      * @throws ServletException
      * @throws IOException
      */
     private boolean checkAdmin() throws ServletException, IOException {
 
-        //セッションからログイン中の従業員情報を取得
+        //セッションからログイン中のユーザー情報を取得
         UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
 
         //管理者でなければエラー画面を表示

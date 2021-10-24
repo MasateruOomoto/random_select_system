@@ -23,7 +23,7 @@ public class ChapterView {
     /**
      * 問題集のID
      */
-    private Integer mondaiId;
+    private Integer workbookId;
 
     /**
      * チャプター名

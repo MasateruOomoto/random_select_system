@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import constants.JpaConst;
@@ -18,6 +20,15 @@ import lombok.Setter;
  *
  */
 @Table(name = JpaConst.TABLE_CHA)
+
+@NamedQueries({
+    @NamedQuery(
+            name = JpaConst.Q_CHA_GET_ALL,
+            query = JpaConst.Q_CHA_GET_ALL_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_CHA_COUNT,
+            query = JpaConst.Q_CHA_COUNT_DEF)
+})
 
 @Getter
 @Setter
@@ -38,8 +49,8 @@ public class Chapter {
     /**
      * 問題集のID
      */
-    @Column(name = JpaConst.CHA_COL_MONDAI_ID)
-    private Integer mondaiId;
+    @Column(name = JpaConst.CHA_COL_WORKBOOK_ID)
+    private Integer workbookId;
 
     /**
      * チャプター名

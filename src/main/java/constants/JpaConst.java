@@ -30,7 +30,7 @@ public interface JpaConst {
     String TABLE_CHA = "chapters"; // テーブル名
     //チャプターテーブルカラム
     String CHA_COL_ID = "id"; //id
-    String CHA_COL_MONDAI_ID = "mondai_id"; //問題集のID
+    String CHA_COL_WORKBOOK_ID = "mondai_id"; //問題集のID
     String CHA_COL_CHAPTER_NAME = "chapter_name"; //チャプターの名前
     String CHA_COLSORT = "sort"; //表示順
 
@@ -57,6 +57,7 @@ public interface JpaConst {
     //Entity名
     String ENTITY_USER = "user"; //ユーザー
     String ENTITY_WOR = "workbook"; //問題集
+    String ENTITY_CHA = "chapter"; //チャプター
 
     //JPQL内パラメータ
     String JPQL_PARM_ID = "id"; //id
@@ -65,6 +66,7 @@ public interface JpaConst {
     String JPQL_PARM_USER = "user"; //ユーザー
 
     String JPQL_PARM_WORKBOOK_NAME = "workbookName"; //問題集名
+    String JPQL_PARM_WORKBOOK_ID = "workbookId"; //問題集のID
 
     //NamedQueryの nameとquery
     //全てのユーザーをidの降順に取得する
@@ -99,5 +101,11 @@ public interface JpaConst {
     String Q_WOR_DELETE = ENTITY_WOR + ".deleteById";
     String Q_WOR_INFOMATION_DELETE = "DELETE FROM Workbook AS e WHERE e.id = :" + JPQL_PARM_ID;
 
+    //問題集にあるすべてのチャプターをidの降順に取得する
+    String Q_CHA_GET_ALL = ENTITY_CHA + ".getAll";
+    String Q_CHA_GET_ALL_DEF = "SELECT e FROM Chapter AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " ORDER BY e.id DESC";
+    //問題集にある全てのチャプターの件数を取得する
+    String Q_CHA_COUNT = ENTITY_CHA + ".count";
+    String Q_CHA_COUNT_DEF = "SELECT COUNT(e) FROM Chapter AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;
 
 }
