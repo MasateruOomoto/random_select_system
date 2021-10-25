@@ -68,6 +68,9 @@ public interface JpaConst {
     String JPQL_PARM_WORKBOOK_NAME = "workbookName"; //問題集名
     String JPQL_PARM_WORKBOOK_ID = "workbookId"; //問題集のID
 
+    String JPQL_PARM_CHAPTER_NAME = "chapterName"; //チャプター名
+    String JPQL_PRAM_CHAPTER_ID = "chapterId"; //チャプターID
+
     //NamedQueryの nameとquery
     //全てのユーザーをidの降順に取得する
     String Q_USER_GET_ALL = ENTITY_USER + ".getAll"; //name
@@ -95,7 +98,7 @@ public interface JpaConst {
     String Q_WOR_GET_BY_WOR_ID = ENTITY_WOR + ".getByWorId";
     String Q_WOR_GET_BY_WOR_ID_DEF = "SELECT e FROM Workbook AS e WHERE e.Id = :" + JPQL_PARM_ID;
     //指定した問題集名を保持する問題集の件数を取得する
-    String Q_WOR_COUNT_RESISTERED_BY_WOR_NAME = ENTITY_USER + ".countRegisteredByWorkbookId";
+    String Q_WOR_COUNT_RESISTERED_BY_WOR_NAME = ENTITY_WOR + ".countRegisteredByWorkbookName";
     String Q_WOR_COUNT_RESISTERED_BY_WOR_NAME_DEF = "SELECT COUNT(e) FROM Workbook AS e WHERE e.workbookName = :" + JPQL_PARM_WORKBOOK_NAME;
     //問題集IDを元に問題集を削除する
     String Q_WOR_DELETE = ENTITY_WOR + ".deleteById";
@@ -107,5 +110,7 @@ public interface JpaConst {
     //問題集にある全てのチャプターの件数を取得する
     String Q_CHA_COUNT = ENTITY_CHA + ".count";
     String Q_CHA_COUNT_DEF = "SELECT COUNT(e) FROM Chapter AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;
-
+    //指定したチャプター名を保持するチャプターの件数を取得する
+    String Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID = ENTITY_CHA + ".countRegisteredByChapterNameAndWorkbookId";
+    String Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID_DEF = "SELECT COUNT(e) FROM Chapter AS e WHERE e.chapterName = :" + JPQL_PARM_CHAPTER_NAME + " AND e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;
 }

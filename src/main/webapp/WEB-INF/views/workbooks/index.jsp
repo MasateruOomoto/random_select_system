@@ -71,7 +71,7 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='?action=${actCha}&command=${commNew}&workbook_id="${workbook.id}' />">新規問題集の登録</a></p>
+        <p><a href="<c:url value='?action=${actWor}&command=${commNew}&workbook_id="${workbook.id}' />">新規問題集の登録</a></p>
 
     </c:param>
 </c:import>

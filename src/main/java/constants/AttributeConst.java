@@ -45,6 +45,7 @@ public enum AttributeConst {
     WORKBOOK_ID("workbook_id"),
     WORKBOOK_FLAG("workbook_flag"),
     WORKBOOK_NAME("workbook_name"),
+    SESSION_WORKBOOK_ID("session_workbook_id"),
 
     //科目名フラグ
     ROLE_MATH("1"), //数学
@@ -58,6 +59,7 @@ public enum AttributeConst {
     CHAPTER("chapter"),
     CHAPTERS("chapters"),
     CHAPTER_NAME("chapter_name"),
+    CHAPTER_SORT("chapter_sort"),
     CHAPTER_ID("chapter_id"),
     CHAPTER_COUNT("chapter_count");
 

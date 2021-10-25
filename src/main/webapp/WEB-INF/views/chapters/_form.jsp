@@ -20,7 +20,10 @@
 <input type="text" name="${AttributeConst.CHAPTER_NAME.getValue()}" value="${chapter.chapterName}" />
 <br /><br />
 
-<input type="hidden" name="${AttributeConst.WORKBOOK_ID.getValue()}" value="${workbook.id}" />
+<label for="${AttributeConst.CHAPTER_SORT.getValue()}">ソート(半角数字で入力)</label><br />
+<input type="text" name="${AttributeConst.CHAPTER_SORT.getValue()}" value="${chapter.sort}" />
+<br /><br />
+
 <input type="hidden" name="${AttributeConst.CHAPTER_ID.getValue()}" value="${chapter.id}" />
 <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
 <button type="submit">投稿</button>

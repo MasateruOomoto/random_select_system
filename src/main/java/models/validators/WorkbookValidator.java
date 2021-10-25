@@ -22,11 +22,11 @@ public class WorkbookValidator {
      * @return エラーのリスト
      */
     public static List<String> validate(
-            WorkbookService service, WorkbookView wv, Boolean workbookDuplicateCheckFlag) {
+            WorkbookService service, WorkbookView wv, Boolean workbookNameDuplicateCheckFlag) {
         List<String> errors = new ArrayList<String>();
 
         //問題集名の名前のチェック
-        String workbookNameError = validateName(service, wv.getWorkbookName(), workbookDuplicateCheckFlag);
+        String workbookNameError = validateName(service, wv.getWorkbookName(), workbookNameDuplicateCheckFlag);
         if (!workbookNameError.equals("")) {
             errors.add(workbookNameError);
         }
@@ -41,13 +41,13 @@ public class WorkbookValidator {
      * @param workbookDuplicateCheckFlag 問題集名の重複チェックを実施するかどうか(実施する:true 実施しない:false)
      * @return エラーメッセージ
      */
-    private static String validateName(WorkbookService service, String workbookName, Boolean workbookDuplicateCheckFlag) {
+    private static String validateName(WorkbookService service, String workbookName, Boolean workbookNameDuplicateCheckFlag) {
       //入力値がなければエラーメッセージを返却
         if (workbookName == null || workbookName.equals("")) {
             return MessageConst.E_NOWORKBOOK_NAME.getMessage();
         }
 
-        if (workbookDuplicateCheckFlag) {
+        if (workbookNameDuplicateCheckFlag) {
             //問題集名の重複チェックを実施
 
             long workbooksCount = isDuplicateWorkbook(service, workbookName);

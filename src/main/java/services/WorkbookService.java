@@ -142,7 +142,7 @@ public class WorkbookService extends ServiceBase {
      */
     public long countByName(String workbookName) {
 
-        //指定したユーザーIDを保持するユーザーの件数を取得する
+        //指定した問題集名を保持する問題集の件数を取得する
         long workbooks_count = (long) em.createNamedQuery(JpaConst.Q_WOR_COUNT_RESISTERED_BY_WOR_NAME, Long.class)
                 .setParameter(JpaConst.JPQL_PARM_WORKBOOK_NAME, workbookName)
                 .getSingleResult();

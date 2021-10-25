@@ -3,7 +3,7 @@
 <%@ page import="constants.AttributeConst" %>
 <%@ page import="constants.ForwardConst" %>
 
-<c:set var="action" value="${ForwardConst.ACT_WOR.getValue()}" />
+<c:set var="action" value="${ForwardConst.ACT_CHA.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commUpd" value="${ForwardConst.CMD_UPDATE.getValue()}" />
 <c:set var="commDel" value="${ForwardConst.CMD_DESTROY.getValue()}" />
@@ -11,7 +11,7 @@
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
 
-        <h2>問題集名 : ${workbook.workbookName} の情報 編集ページ</h2>
+        <h2>チャプター名 : ${chapter.chapterName} の情報 編集ページ</h2>
         <form method="POST"
             action="<c:url value='?action=${action}&command=${commUpd}' />">
             <c:import url="_form.jsp" />
@@ -22,7 +22,7 @@
         </p>
         <form method="POST"
             action="<c:url value='?action=${action}&command=${commDel}' />">
-            <input type="hidden" name="${AttributeConst.WORKBOOK_ID.getValue()}" value="${workbook.id}" />
+            <input type="hidden" name="${AttributeConst.CHAPTER_ID.getValue()}" value="${chapter.id}" />
             <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
         </form>
         <script>

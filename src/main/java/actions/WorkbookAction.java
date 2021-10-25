@@ -184,7 +184,7 @@ public class WorkbookAction extends ActionBase {
                     //更新中にエラーが発生した場合
 
                     putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                    putRequestScope(AttributeConst.USER, wv); //入力されたユーザー情報
+                    putRequestScope(AttributeConst.WORKBOOK, wv); //入力された問題集情報
                     putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
 
                     //編集画面を再表示

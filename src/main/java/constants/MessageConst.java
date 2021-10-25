@@ -22,7 +22,11 @@ public enum MessageConst {
     E_USER_USERID_EXIST("入力されたユーザーIDの情報は既に存在しています。"),
 
     E_NOWORKBOOK_NAME("問題集名を入力してください。"),
-    E_WORKBOOK_NAME_EXIST("入力された問題集名の情報はすでに存在しています。");
+    E_WORKBOOK_NAME_EXIST("入力された問題集名の情報はすでに存在しています。"),
+
+    E_NOCHAPTER_NAME("チャプター名を入力してください。"),
+    E_NOSORT("ソート番号を入力してください。"),
+    E_CHAPTER_NAME_EXIST("入力されたチャプター名の情報はすでに存在しています。");
 
     /**
      * 文字列

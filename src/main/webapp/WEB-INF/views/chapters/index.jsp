@@ -27,9 +27,9 @@
                 <c:forEach var="chapter" items="${chapters}" varStatus="status">
                     <tr class="row${status.count % 2}">
                         <td>
-                            <a href="<c:url value='?action=${actNum}&command=${commIdx}&workbookId=${workbook.id}&chapterId=${chapter.id}' />"><c:out value="${chapter.chapterName}" /></a>
+                            <a href="<c:url value='?action=${actNum}&command=${commIdx}&chapter_id=${chapter.id}' />"><c:out value="${chapter.chapterName}" /></a>
                         </td>
-                        <td><a href="<c:url value='?action=${actCha}&command=${commEdit}&workbookId=${workbook.id}&id=${chapter.id}' />">編集する</a></td>
+                        <td><a href="<c:url value='?action=${actCha}&command=${commEdit}&chapter_id=${chapter.id}' />">編集する</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -48,7 +48,7 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='?action=${actCha}&command=${commNew}&workbook_id=${workbook.id}' />">新規チャプターの登録</a></p>
+        <p><a href="<c:url value='?action=${actCha}&command=${commNew}' />">新規チャプターの登録</a></p>
 
     </c:param>
 </c:import>

@@ -27,7 +27,10 @@ import lombok.Setter;
             query = JpaConst.Q_CHA_GET_ALL_DEF),
     @NamedQuery(
             name = JpaConst.Q_CHA_COUNT,
-            query = JpaConst.Q_CHA_COUNT_DEF)
+            query = JpaConst.Q_CHA_COUNT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID,
+            query = JpaConst.Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID_DEF)
 })
 
 @Getter

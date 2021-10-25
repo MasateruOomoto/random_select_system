@@ -44,7 +44,8 @@ public enum ForwardConst {
     FW_WOR_DESTROY("workbooks/destroy"),
 
     FW_CHA_INDEX("chapters/index"),
-    FW_CHA_NEW("chapters/new");
+    FW_CHA_NEW("chapters/new"),
+    FW_CHA_EDIT("chapters/edit");
 
     /**
      * 文字列
