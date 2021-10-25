@@ -50,7 +50,7 @@ public class ChapterService extends ServiceBase {
     public List<String> create(ChapterView cv) {
 
         //登録内容のバリデーションを行う
-        List<String> errors = ChapterValidator.validate(this, cv, true, true);    //ソートと名前二つ必要
+        List<String> errors = ChapterValidator.validate(this, cv, true);
 
         //バリデーションエラーがなければデータを登録する
         if (errors.size() == 0) {
@@ -99,4 +99,41 @@ public class ChapterService extends ServiceBase {
 
         return c;
     }
+
+    /**
+     * 画面から入力されたチャプターの更新内容を元にデータを1件作成し、チャプターテーブルを更新する
+     * @param cv 画面から入力されたチャプターの登録内容
+     * @return バリデーションや更新処理中に発生したエラーのリスト
+     */
+    public List<String> update(ChapterView cv) {
+
+        //idを条件に登録済みのチャプター情報を取得する
+        ChapterView savedChapter = findOne(cv.getId());
+
+        boolean validateName = false;
+        if (!savedChapter.getChapterName().equals(cv.getChapterName())) {
+            //チャプター名に変更がある場合
+
+            validateName = true; //バリデーションを行う
+            savedChapter.setChapterName(cv.getChapterName()); //変更後のチャプター名を設定する
+        }
+
+        savedChapter.setSort(cv.getSort()); //変更後のソート番号を設定する
+
+        //更新内容についてのバリデーションを行う
+        List<String> errors = ChapterValidator.validate(this, savedChapter, validateName);
+
+        //バリデーションエラーがなければデータを更新する
+        if (errors.size() == 0) {
+            em.getTransaction().begin();
+            Chapter c = findOneInternal(savedChapter.getId());
+            ChapterConverter.copyViewToModel(c, savedChapter);
+            em.getTransaction().commit();
+        }
+
+        //エラーを返却（エラーがなければ0件の空リスト）
+        return errors;
+    }
+
+
 }

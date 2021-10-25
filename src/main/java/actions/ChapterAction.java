@@ -177,6 +177,51 @@ public class ChapterAction extends ActionBase {
 
     }
 
+    /**
+     * 更新を行う
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void update() throws ServletException, IOException {
+
+        //管理者かどうかのチェック
+        if(checkAdmin()) {
+
+            //CSRF対策 tokenのチェック
+            if (checkToken()) {
+                //パラメータの値を元にチャプター情報のインスタンスを作成する
+                ChapterView cv = new ChapterView(
+                        toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
+                        toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                        getRequestParam(AttributeConst.CHAPTER_NAME),
+                        toNumber(getRequestParam(AttributeConst.CHAPTER_SORT)));
+
+                //チャプター情報更新
+                List<String> errors = service.update(cv);
+
+                if (errors.size() > 0) {
+                    //更新中にエラーが発生した場合
+
+                    putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                    putRequestScope(AttributeConst.CHAPTER, cv); //入力されたチャプター情報
+                    putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
+
+                    //編集画面を再表示
+                    forward(ForwardConst.FW_CHA_EDIT);
+                } else {
+                    //更新中にエラーがなかった場合
+
+                    //セッションに更新完了のフラッシュメッセージを設定
+                    putSessionScope(AttributeConst.FLUSH, MessageConst.I_UPDATED.getMessage());
+
+                    //一覧画面にリダイレクト
+                    redirect(ForwardConst.ACT_CHA, ForwardConst.CMD_INDEX);
+                }
+
+            }
+        }
+    }
+
 
 
 

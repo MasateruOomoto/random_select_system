@@ -80,8 +80,6 @@ public class WorkbookService extends ServiceBase {
         return w;
     }
 
-
-
     /**
      * 画面から入力された問題集の更新内容を元にデータを1件作成し、問題集テーブルを更新する
      * @param wv 画面から入力された問題集の登録内容

@@ -21,18 +21,12 @@ public class ChapterValidator {
      * @return エラーのリスト
      */
     public static List<String> validate(
-            ChapterService service, ChapterView cv, Boolean chapterNameDuplicateCheckFlag, Boolean chapterSortDuplicateCheckFlag) {
+            ChapterService service, ChapterView cv, Boolean chapterNameDuplicateCheckFlag) {
         List<String> errors = new ArrayList<String>();
 
         //チャプター名の名前のチェック
         String chapterNameError = validateName(service, cv.getChapterName(), cv.getWorkbookId(), chapterNameDuplicateCheckFlag);
         if (!chapterNameError.equals("")) {
-            errors.add(chapterNameError);
-        }
-
-        //ソートの入力チェック
-        String chapterSortError = validateSort(cv.getSort(), chapterSortDuplicateCheckFlag);
-        if (!chapterSortError.equals("")) {
             errors.add(chapterNameError);
         }
 
@@ -77,24 +71,6 @@ public class ChapterValidator {
         long chaptersCount = service.countByName(chapterName, workbookId);
         return chaptersCount;
     }
-
-    /**
-     * ソート番号の入力チェックを行い、エラーメッセージを返却
-     * @param sort ソート番号
-     * @param sortCheckFlag ソート番号の入力チェックを実施するかどうか(実施する:true 実施しない:false)
-     * @return エラーメッセージ
-     */
-    private static String validateSort(Integer sort, Boolean sortCheckFlag) {
-
-        //入力チェックを実施 かつ 入力値がなければエラーメッセージを返却
-        if (sortCheckFlag && (sort == null)) {
-            return MessageConst.E_NOSORT.getMessage();
-        }
-
-        //エラーがない場合は空文字を返却
-        return "";
-    }
-
 
 
 }
