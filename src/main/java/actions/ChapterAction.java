@@ -222,18 +222,26 @@ public class ChapterAction extends ActionBase {
         }
     }
 
+    /**
+     * 削除を行う
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void destroy() throws ServletException, IOException {
 
+        //CSRF対策 tokenのチェック
+        if (checkToken() && checkAdmin()) {
 
+            //idを条件にチャプターデータを削除する
+            service.destroy(toNumber(getRequestParam(AttributeConst.CHAPTER_ID)));
 
+            //セッションに削除完了のフラッシュメッセージを設定
+            putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
 
-
-
-
-
-
-
-
-
+            //一覧画面にリダイレクト
+            redirect(ForwardConst.ACT_CHA, ForwardConst.CMD_INDEX);
+        }
+    }
 
     /**
      * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示

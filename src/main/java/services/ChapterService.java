@@ -135,5 +135,22 @@ public class ChapterService extends ServiceBase {
         return errors;
     }
 
+    /**
+     * idを条件のチャプターデータを削除する
+     * @param id
+     */
+    public void destroy(Integer id) {
+
+        // トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_CHA_DELETE)
+                .setParameter(JpaConst.JPQL_PARM_ID, id)
+                .executeUpdate();
+
+        // トランザクション終了
+        em.getTransaction().commit();
+    }
 
 }

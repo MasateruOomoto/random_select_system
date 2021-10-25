@@ -113,4 +113,7 @@ public interface JpaConst {
     //指定したチャプター名を保持するチャプターの件数を取得する
     String Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID = ENTITY_CHA + ".countRegisteredByChapterNameAndWorkbookId";
     String Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID_DEF = "SELECT COUNT(e) FROM Chapter AS e WHERE e.chapterName = :" + JPQL_PARM_CHAPTER_NAME + " AND e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;
+    //問題集IDを元に問題集を削除する
+    String Q_CHA_DELETE = ENTITY_CHA + ".deleteById";
+    String Q_CHA_INFOMATION_DELETE = "DELETE FROM Chapter AS e WHERE e.id = :" + JPQL_PARM_ID;
 }
