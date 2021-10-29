@@ -8,7 +8,7 @@ public enum ForwardConst {
     ACT_USER("User"),
     ACT_WOR("Workbook"),
     ACT_CHA("Chapter"),
-    ACT_NUM("WorkbookNumber"),
+    ACT_NUM("Number"),
     ACT_AUTH("Auth"),
     ACT_RAN("Random"),
 
@@ -45,7 +45,11 @@ public enum ForwardConst {
 
     FW_CHA_INDEX("chapters/index"),
     FW_CHA_NEW("chapters/new"),
-    FW_CHA_EDIT("chapters/edit");
+    FW_CHA_EDIT("chapters/edit"),
+
+    FW_NUM_INDEX("numbers/index"),
+    FW_NUM_NEW("numbers/new"),
+    FW_NUM_EDIT("numbers/edit");
 
     /**
      * 文字列

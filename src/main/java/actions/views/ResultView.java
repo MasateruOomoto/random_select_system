@@ -28,7 +28,7 @@ public class ResultView {
     /**
      * 問題番号のID
      */
-    private Integer mondaiNoId;
+    private Integer numberId;
 
     /**
      * 回答フラグ

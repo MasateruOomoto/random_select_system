@@ -17,7 +17,7 @@ import services.WorkbookService;
 
 
 /**
- * に関わる処理を行うActionクラス
+ * チャプターに関わる処理を行うActionクラス
  *
  */
 public class ChapterAction extends ActionBase {
@@ -39,6 +39,7 @@ public class ChapterAction extends ActionBase {
         service.close();
     }
 
+
     /**
      * 一覧画面を表示する
      * @throws ServletException
@@ -55,12 +56,13 @@ public class ChapterAction extends ActionBase {
                 putSessionScope(AttributeConst.SESSION_WORKBOOK_ID, getRequestParam(AttributeConst.WORKBOOK_ID));
             }
 
-            //セッションスコープworkbook_idに該当する問題集のViewを取得
+            //セッションスコープのworkbook_idに該当する問題集のViewを取得
             WorkbookService serviceWorkbook = new WorkbookService();
             WorkbookView wv = serviceWorkbook.findOne(toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)));
 
+
             //セッションスコープに登録されているworkbook_idを元に各種データを取得
-            int SessionWorkbookId = wv.getId();;
+            int SessionWorkbookId = wv.getId();
 
             //指定されたページ数の一覧画面に表示するデータを取得
             int page = getPage();
@@ -129,7 +131,7 @@ public class ChapterAction extends ActionBase {
                 //登録中にエラーがあった場合
 
                 putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.CHAPTER, cv); //入力された問題集情報
+                putRequestScope(AttributeConst.CHAPTER, cv); //入力されたチャプター情報
                 putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
 
                 //新規登録画面を再表示
@@ -249,7 +251,7 @@ public class ChapterAction extends ActionBase {
      * @throws ServletException
      * @throws IOException
      */
-    private boolean checkAdmin() throws ServletException, IOException {
+    public boolean checkAdmin() throws ServletException, IOException {
 
         //セッションからログイン中のユーザー情報を取得
         UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
@@ -264,7 +266,6 @@ public class ChapterAction extends ActionBase {
 
             return true;
         }
+
     }
-
-
 }

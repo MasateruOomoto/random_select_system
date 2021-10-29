@@ -41,7 +41,7 @@ public class ChapterValidator {
      * @return エラーメッセージ
      */
     private static String validateName(ChapterService service, String chapterName, Integer workbookId, Boolean chapterNameDuplicateCheckFlag) {
-      //入力値がなければエラーメッセージを返却
+        //入力値がなければエラーメッセージを返却
         if (chapterName == null || chapterName.equals("")) {
             return MessageConst.E_NOCHAPTER_NAME.getMessage();
         }

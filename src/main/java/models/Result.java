@@ -43,8 +43,8 @@ public class Result {
     /**
      * 問題番号のID
      */
-    @Column(name = JpaConst.RES_COL_MONDAI_NO_ID)
-    private Integer mondaiNoId;
+    @Column(name = JpaConst.RES_COL_NUMBER_ID)
+    private Integer numberId;
 
     /**
      * 回答フラグ

@@ -61,7 +61,19 @@ public enum AttributeConst {
     CHAPTER_NAME("chapter_name"),
     CHAPTER_SORT("chapter_sort"),
     CHAPTER_ID("chapter_id"),
-    CHAPTER_COUNT("chapter_count");
+    CHAPTER_COUNT("chapter_count"),
+    SESSION_CHAPTER_ID("session_chapter_id"),
+
+    //問題番号管理
+    NUMBER("number"),
+    NUMBERS("numbers"),
+    NUMBER_ID("number_id"),
+    NUMBER_COUNT("number_count"),
+    NUMBER_NUMBER("number_number"),
+    FIRST_NUMBER("first_number"),
+    LAST_NUMBER("last_number"),
+    DELETE_NUMBER("delete_number");
+
 
     private final String text;
     private final Integer i;

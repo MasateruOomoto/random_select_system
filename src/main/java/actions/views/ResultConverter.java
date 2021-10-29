@@ -20,7 +20,7 @@ public class ResultConverter {
         return new Result(
                 rv.getId(),
                 rv.getUserId(),
-                rv.getMondaiNoId(),
+                rv.getNumberId(),
                 rv.getAnswerFlag(),
                 rv.getViewCount());
     }
@@ -39,7 +39,7 @@ public class ResultConverter {
         return new ResultView(
                 r.getId(),
                 r.getUserId(),
-                r.getMondaiNoId(),
+                r.getNumberId(),
                 r.getAnswerFlag(),
                 r.getViewCount());
     }
@@ -84,7 +84,7 @@ public class ResultConverter {
     public static void copyViewToModel(Result r, ResultView rv) {
         r.setId(rv.getId());
         r.setUserId(rv.getUserId());
-        r.setMondaiNoId(rv.getMondaiNoId());
+        r.setNumberId(rv.getNumberId());
         r.setAnswerFlag(rv.getAnswerFlag());
         r.setViewCount(rv.getViewCount());
     }
@@ -98,7 +98,7 @@ public class ResultConverter {
     public static void copyModelToView(Result r, ResultView rv) {
         rv.setId(r.getId());
         rv.setUserId(r.getUserId());
-        rv.setMondaiNoId(r.getMondaiNoId());
+        rv.setNumberId(r.getNumberId());
         rv.setAnswerFlag(r.getAnswerFlag());
         rv.setViewCount(r.getViewCount());
     }

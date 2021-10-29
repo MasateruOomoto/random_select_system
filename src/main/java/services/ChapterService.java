@@ -27,7 +27,6 @@ public class ChapterService extends ServiceBase {
                 .getResultList();
 
         return ChapterConverter.toViewList(chapters);
-
     }
 
     /**

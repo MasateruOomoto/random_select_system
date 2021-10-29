@@ -38,16 +38,16 @@ public interface JpaConst {
     String TABLE_NUM = "numbers"; //テーブル名
     //問題番号テーブルカラム
     String NUM_COL_ID = "id"; //id
-    String NUM_COL_MONDAI_ID = "mondai_id"; //問題集のID
+    String NUM_COL_WORKBOOK_ID = "workbook_id"; //問題集のID
     String NUM_COL_CHAPTER_ID = "chapter_id"; //チャプターのID
-    String NUM_COL_MONDAI_NO = "mondai_no"; //問題番号
+    String NUM_COL_NUMBER = "number"; //問題番号
 
     //回答結果テーブル
-    String TABLE_RES = "result"; //テーブル名
+    String TABLE_RES = "results"; //テーブル名
     //回答結果テーブルカラム
     String RES_COL_ID = "id"; //id_
     String RES_COL_USER_ID = "user_id"; //ユーザーID
-    String RES_COL_MONDAI_NO_ID = "mondai_no_id"; //問題番号のID
+    String RES_COL_NUMBER_ID = "number_id"; //問題番号のID
     String RES_COL_ANSWER_FLG = "answer_flg"; //回答フラグ
     String RES_COL_VIEW_COUNT = "view_count"; //閲覧回数
 
@@ -58,6 +58,7 @@ public interface JpaConst {
     String ENTITY_USER = "user"; //ユーザー
     String ENTITY_WOR = "workbook"; //問題集
     String ENTITY_CHA = "chapter"; //チャプター
+    String ENTITY_NUM = "number"; //問題番号
 
     //JPQL内パラメータ
     String JPQL_PARM_ID = "id"; //id
@@ -69,7 +70,9 @@ public interface JpaConst {
     String JPQL_PARM_WORKBOOK_ID = "workbookId"; //問題集のID
 
     String JPQL_PARM_CHAPTER_NAME = "chapterName"; //チャプター名
-    String JPQL_PRAM_CHAPTER_ID = "chapterId"; //チャプターID
+    String JPQL_PARM_CHAPTER_ID = "chapterId"; //チャプターID
+
+    String JPQL_PARM_DELETE_NUMBER = "deleteNumber"; //削除する番号
 
     //NamedQueryの nameとquery
     //全てのユーザーをidの降順に取得する
@@ -116,4 +119,14 @@ public interface JpaConst {
     //問題集IDを元に問題集を削除する
     String Q_CHA_DELETE = ENTITY_CHA + ".deleteById";
     String Q_CHA_INFOMATION_DELETE = "DELETE FROM Chapter AS e WHERE e.id = :" + JPQL_PARM_ID;
+
+    //チャプターにあるすべての問題番号を問題番号の昇順に取得する
+    String Q_NUM_GET_ALL = ENTITY_NUM + ".getAll";
+    String Q_NUM_GET_ALL_DEF = "SELECT e FROM Number AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " ORDER BY e.number";
+    //チャプターにある全ての問題番号の件数を取得する
+    String Q_NUM_COUNT = ENTITY_NUM + ".count";
+    String Q_NUM_COUNT_DEF = "SELECT COUNT(e) FROM Number AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID;
+    //問題番号を元に問題番号を削除する
+    String Q_NUM_DELETE = ENTITY_NUM + ".deleteById";
+    String Q_NUM_INFOMATION_DELETE = "DELETE FROM Number AS e WHERE e.id = :" + JPQL_PARM_DELETE_NUMBER;
 }

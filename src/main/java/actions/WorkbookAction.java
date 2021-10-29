@@ -29,11 +29,14 @@ public class WorkbookAction extends ActionBase {
 
         service = new WorkbookService();
 
+
         //メソッドを実行
         invoke();
 
         service.close();
     }
+
+
 
     /**
      * 一覧画面を表示する
@@ -229,7 +232,7 @@ public class WorkbookAction extends ActionBase {
      * @throws ServletException
      * @throws IOException
      */
-    private boolean checkAdmin() throws ServletException, IOException {
+    public boolean checkAdmin() throws ServletException, IOException {
 
         //セッションからログイン中のユーザー情報を取得
         UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
@@ -244,6 +247,6 @@ public class WorkbookAction extends ActionBase {
 
             return true;
         }
-    }
 
+    }
 }

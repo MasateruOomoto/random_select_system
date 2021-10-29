@@ -3,25 +3,25 @@ package actions.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.WorkNumber;
+import models.Number;
 
 /**
  * 問題番号データのDTOモデル⇔Viewモデルの変換を行うクラス
  */
-public class WorkNumberConverter {
+public class NumberConverter {
 
     /**
      * ViewモデルのインスタンスからDTOモデルのインスタンスを作成する
      * @param nv WorkNumberViewのインスタンス
      * @return WorkNumberのインスタンス
      */
-    public static WorkNumber toModel(WorkNumberView nv) {
+    public static Number toModel(NumberView nv) {
 
-        return new WorkNumber(
+        return new Number(
                 nv.getId(),
-                nv.getMondaiId(),
+                nv.getWorkbookId(),
                 nv.getChapterId(),
-                nv.getMondaiNo());
+                nv.getNumber());
     }
 
     /**
@@ -29,17 +29,17 @@ public class WorkNumberConverter {
      * @param n WorkNumberのインスタンス
      * @return WorkNumberViewのインスタンス
      */
-    public static WorkNumberView toView(WorkNumber n) {
+    public static NumberView toView(Number n) {
 
         if(n == null) {
             return null;
         }
 
-        return new WorkNumberView(
+        return new NumberView(
                 n.getId(),
-                n.getMondaiId(),
+                n.getWorkbookId(),
                 n.getChapterId(),
-                n.getMondaiNo());
+                n.getNumber());
     }
 
     /**
@@ -47,10 +47,10 @@ public class WorkNumberConverter {
      * @param list Viewモデルのリスト
      * @return DTOモデルのリスト
      */
-    public static List<WorkNumber> toModelList(List<WorkNumberView> list) {
-        List<WorkNumber> ns = new ArrayList<>();
+    public static List<Number> toModelList(List<NumberView> list) {
+        List<Number> ns = new ArrayList<>();
 
-        for (WorkNumberView nv : list) {
+        for (NumberView nv : list) {
             ns.add(toModel(nv));
         }
 
@@ -64,10 +64,10 @@ public class WorkNumberConverter {
      * @param list DTOモデルのリスト
      * @return Viewモデルのリスト
      */
-    public static List<WorkNumberView> toViewList(List<WorkNumber> list) {
-        List<WorkNumberView> nvs = new ArrayList<>();
+    public static List<NumberView> toViewList(List<Number> list) {
+        List<NumberView> nvs = new ArrayList<>();
 
-        for (WorkNumber n : list) {
+        for (Number n : list) {
             nvs.add(toView(n));
         }
 
@@ -79,11 +79,11 @@ public class WorkNumberConverter {
      * @param n DTOモデル(コピー先)
      * @param nv Viewモデル(コピー元)
      */
-    public static void copyViewToModel(WorkNumber n, WorkNumberView nv) {
+    public static void copyViewToModel(Number n, NumberView nv) {
         n.setId(nv.getId());
-        n.setMondaiId(nv.getMondaiId());
+        n.setWorkbookId(nv.getWorkbookId());
         n.setChapterId(nv.getChapterId());
-        n.setMondaiNo(nv.getMondaiNo());
+        n.setNumber(nv.getNumber());
     }
 
 
@@ -92,10 +92,10 @@ public class WorkNumberConverter {
      * @param n DTOモデル(コピー元)
      * @param nv Viewモデル(コピー先)
      */
-    public static void copyModelToView(WorkNumber n, WorkNumberView nv) {
+    public static void copyModelToView(Number n, NumberView nv) {
         nv.setId(n.getId());
-        nv.setMondaiId(n.getMondaiId());
+        nv.setWorkbookId(n.getWorkbookId());
         nv.setChapterId(n.getChapterId());
-        nv.setMondaiNo(n.getMondaiNo());
+        nv.setNumber(n.getNumber());
     }
 }

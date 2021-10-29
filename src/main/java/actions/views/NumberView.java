@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
 @NoArgsConstructor //引数なしコンストラクタを自動生成する(Lombok)
 @AllArgsConstructor //全てのクラスフィールドを引数にもつ引数ありコンストラクタを自動生成する(Lombok)
-public class WorkNumberView {
+public class NumberView {
 
     /**
      * id
@@ -23,7 +23,7 @@ public class WorkNumberView {
     /**
      * 問題集のID
      */
-    private Integer mondaiId;
+    private Integer workbookId;
 
     /**
      * チャプターのID
@@ -33,5 +33,5 @@ public class WorkNumberView {
     /**
      * 問題番号
      */
-    private Integer mondaiNo;
+    private Integer number;
 }

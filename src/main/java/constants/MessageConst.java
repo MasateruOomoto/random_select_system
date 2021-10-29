@@ -26,7 +26,10 @@ public enum MessageConst {
 
     E_NOCHAPTER_NAME("チャプター名を入力してください。"),
     E_NOSORT("ソート番号を入力してください。"),
-    E_CHAPTER_NAME_EXIST("入力されたチャプター名の情報はすでに存在しています。");
+    E_CHAPTER_NAME_EXIST("入力されたチャプター名の情報はすでに存在しています。"),
+
+    E_NONUMBER("数字を入力してください"),
+    E_ERR_NUMBER("最初の数字の方が小さくなるように入力してください");
 
     /**
      * 文字列

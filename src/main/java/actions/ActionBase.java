@@ -242,4 +242,13 @@ public abstract class ActionBase {
         return (R) context.getAttribute(key.getValue());
     }
 
+    /**
+     * リクエストスコープから指定されたパラメータの値を取得し、返却する
+     * @param key パラメータ名
+     * @return パラメータの値
+     */
+    protected String[] getRequestParams(AttributeConst key) {
+        return request.getParameterValues(key.getValue());
+    }
+
 }

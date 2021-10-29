@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import constants.JpaConst;
@@ -19,12 +21,24 @@ import lombok.Setter;
  */
 @Table(name = JpaConst.TABLE_NUM)
 
+@NamedQueries({
+    @NamedQuery(
+            name = JpaConst.Q_NUM_GET_ALL,
+            query = JpaConst.Q_NUM_GET_ALL_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_NUM_COUNT,
+            query = JpaConst.Q_NUM_COUNT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_NUM_DELETE,
+            query = JpaConst.Q_NUM_INFOMATION_DELETE)
+})
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class WorkNumber {
+public class Number {
 
     /**
      * id
@@ -37,8 +51,8 @@ public class WorkNumber {
     /**
      * 問題集のID
      */
-    @Column(name = JpaConst.NUM_COL_MONDAI_ID)
-    private Integer mondaiId;
+    @Column(name = JpaConst.NUM_COL_WORKBOOK_ID)
+    private Integer workbookId;
 
     /**
      * チャプターのID
@@ -46,10 +60,11 @@ public class WorkNumber {
     @Column(name =JpaConst.NUM_COL_CHAPTER_ID)
     private Integer chapterId;
 
-    /**
+    /*
      * 問題番号
      */
-    @Column(name = JpaConst.NUM_COL_MONDAI_NO)
-    private Integer mondaiNo;
+    @Column(name = JpaConst.NUM_COL_NUMBER)
+    private Integer number;
+
 
 }
