@@ -12,6 +12,7 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import models.validators.NumberValidator;
 import services.ChapterService;
 import services.NumberService;
 
@@ -85,6 +86,7 @@ public class NumberAction extends ActionBase{
             //一覧画面を表示
             forward(ForwardConst.FW_NUM_INDEX);
         }
+
     }
 
     /**
@@ -114,30 +116,42 @@ public class NumberAction extends ActionBase{
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            List<String> exsists;
+            //入力できているか、入力の順番はあっているかをチェックする
+            List <String> errors = NumberValidator.validateNumber(getRequestParam(AttributeConst.FIRST_NUMBER), getRequestParam(AttributeConst.LAST_NUMBER));
 
-                for (int i = toNumber(getRequestParam(AttributeConst.FIRST_NUMBER)); i < toNumber(getRequestParam(AttributeConst.LAST_NUMBER))+1; i++) {
+
+            if (errors.size() > 0) {
+                //正しく入力できていない場合
+
+                //セッションに不備があった個所を登録
+                putSessionScope(AttributeConst.FLUSH, errors);
+
+            } else {
+                //正しく入力できている場合
+
+                //セッションスコープからworkbook_idとchapter_idを取得
+                int workbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
+                int chapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+
+                for (int inputNumber = toNumber(getRequestParam(AttributeConst.FIRST_NUMBER)); inputNumber < toNumber(getRequestParam(AttributeConst.LAST_NUMBER))+1; inputNumber++) {
 
                     //パラメータの値を元に問題番号情報のインスタンスを作成する
                     NumberView nv = new NumberView(
                             null,
                             toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
                             toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID)),
-                            i);
+                            inputNumber);
 
-                    //問題番号の情報登録作業を行う
-                    exsists = service.create(nv);
+                    //問題番号の情報登録作業を行う    既に登録していないかのバリデーションも行う
+                    service.create(nv, inputNumber, workbookId, chapterId);
                 }
 
-                //登録中にエラーがなかった場合
-
                 //セッションに登録完了のフラッシュメッセージを設定
-                putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
+                //putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
 
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_NUM, ForwardConst.CMD_INDEX);
-
-
+            }
         }
     }
 
@@ -188,33 +202,16 @@ public class NumberAction extends ActionBase{
             for (String deleteNumberId : deleteNumbers) {
                 //idを条件にチャプターデータを削除する
                 service.destroy(toNumber(deleteNumberId));
-
-
-                putSessionScope(AttributeConst.FLUSH, deleteNumberId);
             }
 
             //セッションに削除完了のフラッシュメッセージを設定
-            //putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
+            putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
 
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_NUM, ForwardConst.CMD_INDEX);
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示

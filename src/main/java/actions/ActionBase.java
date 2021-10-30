@@ -165,7 +165,7 @@ public abstract class ActionBase {
      * @param strNumber 変換前文字列
      * @return 変換後数値
      */
-    protected int toNumber(String strNumber) {
+    public static int toNumber(String strNumber) {
         int number = 0;
         try {
             number = Integer.parseInt(strNumber);

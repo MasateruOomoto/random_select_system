@@ -21,9 +21,10 @@
         <form method="POST"
                     action="<c:url value='?action=${action}&command=${commDel}' />">
             <c:forEach var="number" items="${numbers}" varStatus="status">
-                <input type="checkbox" id="<c:out value='${number.number}' />" name="${AttributeConst.DELETE_NUMBER.getValue()}" name = "<c:out value='${number.number}' />">
+                <input type="checkbox" id="<c:out value='${number.number}' />" name="${AttributeConst.DELETE_NUMBER.getValue()}" value = "<c:out value='${number.number}' />">
                 <label for="<c:out value='${number.number}' />"><c:out value="${number.number}" />,</label>
             </c:forEach>
+            <br />
             <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
             <button type="submit">選択した問題番号を削除する</button>
         </form>

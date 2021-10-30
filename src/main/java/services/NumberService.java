@@ -1,12 +1,12 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import actions.views.NumberConverter;
 import actions.views.NumberView;
 import constants.JpaConst;
 import models.Number;
+import models.validators.NumberValidator;
 
 /**
  * 問題集テーブルの操作に関わる処理を行うクラス
@@ -47,19 +47,17 @@ public class NumberService extends ServiceBase {
      * @param nv 画面から入力された問題集の登録内容
      * @return バリデーションや登録処理中に発生したエラーのリスト
      */
-    public List<String> create(NumberView nv) {
+    public void create(NumberView nv, int inputNumber, int workbookId, int chapterId) {
 
-        List<String> exsist = new ArrayList<String>();
+        //登録内容のバリデーションを行う
+        boolean exsist = NumberValidator.validateExsist(this, inputNumber, workbookId, chapterId);
 
         //バリデーションエラーがなければデータを登録する
-        //if (exsist.size() == 0) {
+        if (exsist == false) {
             em.getTransaction().begin();
             em.persist(NumberConverter.toModel(nv));
             em.getTransaction().commit();
-       // }
-
-        //エラーを返却（エラーがなければ0件の空リスト）
-        return exsist;
+        }
     }
 
     /**
@@ -78,6 +76,22 @@ public class NumberService extends ServiceBase {
 
         // トランザクション終了
         em.getTransaction().commit();
+    }
+
+    /**
+     * 問題番号を条件に該当するデータの件数を取得し、返却する
+     * @param inputNumber 登録予定の問題番号
+     * @return 該当するデータの件数
+     */
+    public long countByNumber(Integer inputNumber, Integer workbookId, Integer chapterId) {
+
+        //指定したユーザーIDを保持するユーザーの件数を取得する
+        long numbers_count = (long) em.createNamedQuery(JpaConst.Q_NUM_COUNT_RESISTERED_BY_NUMBER_NUMBER, Long.class)
+                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
+                .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
+                .setParameter(JpaConst.JPQL_PARM_NUMBER, inputNumber)
+                .getSingleResult();
+        return numbers_count;
     }
 
 

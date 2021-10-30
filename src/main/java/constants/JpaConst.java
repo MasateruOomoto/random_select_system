@@ -73,6 +73,7 @@ public interface JpaConst {
     String JPQL_PARM_CHAPTER_ID = "chapterId"; //チャプターID
 
     String JPQL_PARM_DELETE_NUMBER = "deleteNumber"; //削除する番号
+    String JPQL_PARM_NUMBER = "number"; //問題番号
 
     //NamedQueryの nameとquery
     //全てのユーザーをidの降順に取得する
@@ -128,5 +129,8 @@ public interface JpaConst {
     String Q_NUM_COUNT_DEF = "SELECT COUNT(e) FROM Number AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID;
     //問題番号を元に問題番号を削除する
     String Q_NUM_DELETE = ENTITY_NUM + ".deleteById";
-    String Q_NUM_INFOMATION_DELETE = "DELETE FROM Number AS e WHERE e.id = :" + JPQL_PARM_DELETE_NUMBER;
+    String Q_NUM_INFOMATION_DELETE = "DELETE FROM Number AS e WHERE e.number = :" + JPQL_PARM_DELETE_NUMBER;
+    //指定した問題集ID、チャプターID、問題番号を保持するすべてのデータの件数を取得する
+    String Q_NUM_COUNT_RESISTERED_BY_NUMBER_NUMBER = ENTITY_NUM + ".countRegisteredByNumberNumber";
+    String Q_NUM_COUNT_RESISTERED_BY_NUMBER_NUMBER_DEF = "SELECT COUNT(e) FROM Number AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.number = :" + JPQL_PARM_NUMBER;
 }
