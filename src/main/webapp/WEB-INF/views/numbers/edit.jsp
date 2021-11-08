@@ -11,18 +11,26 @@
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
-        <c:if test="${flush != null}">
-            <div id="flush_success">
-                <c:out value="${flush}"></c:out>
-            </div>
-        </c:if>
+
+
         <h2>問題番号の編集ページ</h2>
 
         <form method="POST"
                     action="<c:url value='?action=${action}&command=${commDel}' />">
+
+            <c:if test="${errors != null}">
+                <div id="flush_error">
+                    入力内容にエラーがあります。<br />
+                    <c:forEach var="error" items="${errors}">
+                        ・<c:out value="${error}" /><br />
+                    </c:forEach>
+
+                </div>
+            </c:if>
+
             <c:forEach var="number" items="${numbers}" varStatus="status">
-                <input type="checkbox" id="<c:out value='${number.number}' />" name="${AttributeConst.DELETE_NUMBER.getValue()}" value = "<c:out value='${number.number}' />">
-                <label for="<c:out value='${number.number}' />"><c:out value="${number.number}" />,</label>
+                <input type="checkbox" id="<c:out value='${number.id}' />" name="${AttributeConst.DELETE_NUMBER_ID.getValue()}" value = "<c:out value='${number.id}' />">
+                <label for="<c:out value='${number.id}' />"><c:out value="${number.number}" />,</label>
             </c:forEach>
             <br />
             <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />

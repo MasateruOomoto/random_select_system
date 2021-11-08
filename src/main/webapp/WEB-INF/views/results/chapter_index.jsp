@@ -6,9 +6,11 @@
 <c:set var="actWor" value="${ForwardConst.ACT_WOR.getValue()}" />
 <c:set var="actCha" value="${ForwardConst.ACT_CHA.getValue()}" />
 <c:set var="actNum" value="${ForwardConst.ACT_NUM.getValue()}" />
+<c:set var="actRes" value="${ForwardConst.ACT_RES.getValue()}" />
 <c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commEdit" value="${ForwardConst.CMD_EDIT.getValue()}" />
+<c:set var="commIdxStu" value="${ForwardConst.CMD_INDEX_STUDENT.getValue()}" />
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
@@ -22,14 +24,12 @@
             <tbody>
                 <tr>
                     <th>単元名</th>
-                    <th>編集</th>
                 </tr>
                 <c:forEach var="chapter" items="${chapters}" varStatus="status">
                     <tr class="row${status.count % 2}">
                         <td>
-                            <a href="<c:url value='?action=${actNum}&command=${commIdx}&chapter_id=${chapter.id}' />"><c:out value="${chapter.chapterName}" /></a>
+                            <a href="<c:url value='?action=${actRes}&command=${commIdx}&chapter_id=${chapter.id}' />"><c:out value="${chapter.chapterName}" /></a>
                         </td>
-                        <td><a href="<c:url value='?action=${actCha}&command=${commEdit}&chapter_id=${chapter.id}' />">編集する</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -49,8 +49,7 @@
             </c:forEach>
         </div>
         <p>
-            <a href="<c:url value='?action=${actCha}&command=${commNew}' />">新規チャプターの登録</a><br/>
-            <a href="<c:url value='?action=${actWor}&command=${commIdx}' />">問題集一覧に戻る</a>
+            <a href="<c:url value='?action=${actWor}&command=${commIdxStu}' />">問題集一覧に戻る</a>
         </p>
 
     </c:param>

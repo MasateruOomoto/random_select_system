@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import constants.JpaConst;
@@ -17,6 +19,16 @@ import lombok.Setter;
 /**
  * 回答結果のDTOモデル
  */
+
+@NamedQueries({
+    @NamedQuery(
+            name = JpaConst.Q_RES_GET_ALL,
+            query = JpaConst.Q_RES_GET_ALL_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_RES_COUNT,
+            query = JpaConst.Q_RES_COUNT_DEF)
+})
+
 @Table(name = JpaConst.TABLE_RES)
 
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
@@ -41,10 +53,22 @@ public class Result {
     private Integer userId;
 
     /**
-     * 問題番号のID
+     * 問題集のID
      */
-    @Column(name = JpaConst.RES_COL_NUMBER_ID)
-    private Integer numberId;
+    @Column(name = JpaConst.RES_COL_WORKBOOK_ID)
+    private Integer workbookId;
+
+    /**
+     * チャプターのID
+     */
+    @Column(name = JpaConst.RES_COL_CHAPTER_ID)
+    private Integer chapterId;
+
+    /**
+     * 問題番号
+     */
+    @Column(name = JpaConst.RES_COL_NUMBER)
+    private Integer number;
 
     /**
      * 回答フラグ

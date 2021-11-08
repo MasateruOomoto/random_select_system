@@ -28,19 +28,140 @@ public class NumberValidator {
 
         List<String> error = new ArrayList<String>();
 
-        if (firstNumber == null || firstNumber.equals("") || lastNumber == null || lastNumber.equals("")) {
-            //入力がされていなかったとき
+        //数値が入力されているかチェック
+        String inputError = validateInput(firstNumber, lastNumber);
+        if (!inputError.equals("")) {
+            error.add(inputError);
 
-            error.add(MessageConst.E_NONUMBER.getMessage());
-
-        } else if (ActionBase.toNumber(firstNumber) > ActionBase.toNumber(lastNumber)){
-            //最初の数字の方が大きかった場合
-            error.add(MessageConst.E_ERR_NUMBER.getMessage());
+        } else {
+            //入力された数値の順番が正しいかチェック
+            String orderError = validateOrderError(ActionBase.toNumber(firstNumber), ActionBase.toNumber(lastNumber));
+            if (!orderError.equals("")) {
+                error.add(orderError);
+            }
         }
 
         return error;
 
     }
+
+
+    /**
+     * 問題番号が正しく入力されているかについてバリデーションを行う
+     * @param firstNumber 入力された最初の番号
+     * @param lastNujmber 入力された最後の番号
+     * @return エラーのリスト
+     */
+    private static String validateInput(String firstNumber, String lastNumber) {
+
+        //入力値がなければエラーメッセージを返却
+        if (firstNumber == null || firstNumber.equals("") || lastNumber == null || lastNumber.equals("")) {
+            return MessageConst.E_NONUMBER.getMessage();
+        }
+
+        //入力値が数値でなければエラーメッセ―ジを返却
+        boolean result = validateNumberCheck(firstNumber, lastNumber);
+
+        if (result == false) {
+            return MessageConst.E_NOTNUMBER.getMessage();
+        }
+
+        //エラーがない場合は空文字を返却
+        return "";
+    }
+
+
+    /**
+     * 問題番号が数値で入力されているかについてバリデーションを行う
+     * @param firstNumber 入力された最初の番号
+     * @param lastNujmber 入力された最後の番号
+     * @return 数値を入力できていればtrue、できていなければfalseで返却
+     */
+    private static boolean validateNumberCheck(String firstNumber, String lastNumber) {
+
+        boolean result = true;
+
+        //最初の文字が数値か判定する
+        for (int i = 0; i < firstNumber.length(); i++) {
+
+            //i文字目の文字についてCharacter.isDigitメソッドで判定する
+            if (Character.isDigit(firstNumber.charAt(i))) {
+
+                //数字の場合は次の文字の判定へ
+                continue;
+
+            } else {
+
+                //数字出ない場合は検証結果をfalseに上書きする
+                result = false;
+                break;
+            }
+        }
+
+
+        if (result == true) {
+            //最初の文字が数値だった場合は最後の文字が数値だったか判定する
+            for (int i = 0; i < lastNumber.length(); i++) {
+
+                //i文字目の文字についてCharacter.isDigitメソッドで判定する
+                if (Character.isDigit(lastNumber.charAt(i))) {
+
+                    //数字の場合は次の文字の判定へ
+                    continue;
+
+                } else {
+
+                    //数字出ない場合は検証結果をfalseに上書きする
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 入力された数値の順番が正しいかについてバリデーションを行う
+     * @param firstNumber 入力された最初の番号
+     * @param lastNujmber 入力された最後の番号
+     * @return エラーリスト
+     */
+    private static String validateOrderError(int firstNumber, int lastNumber) {
+
+        //入力値がなければエラーメッセージを返却
+        if (firstNumber > lastNumber) {
+            return MessageConst.E_NUMBER_ORDER.getMessage();
+        }
+
+        //エラーがない場合は空文字を返却
+        return "";
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static List<String> ValidateExsist(NumberService sercive, NumberView nv) {
 
@@ -55,7 +176,7 @@ public class NumberValidator {
      * 問題番号の重複チェックを行う、エラーメッセージを返却
      * @param service NumberServiceのインスタンス
      * @param inputNumber 登録番号
-     * @return trueまたはfalse
+     * @return 重複している場合はtrue、重複していない場合はfalseで返却
      */
     public static boolean validateExsist(NumberService service, int inputNumber, int workbookId, int chapterId) {
 

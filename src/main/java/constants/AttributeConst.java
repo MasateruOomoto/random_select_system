@@ -72,7 +72,18 @@ public enum AttributeConst {
     NUMBER_NUMBER("number_number"),
     FIRST_NUMBER("first_number"),
     LAST_NUMBER("last_number"),
-    DELETE_NUMBER("delete_number");
+    DELETE_NUMBER_ID("delete_number_id"),
+
+    //回答結果管理
+    RESULT("result"),
+    RESULTS("results"),
+    RESULT_COUNT("result_count"),
+    ANSWER_FLAG("answer_flag"),
+
+    //回答フラグ
+    ROLE_MARU(0),
+    ROLE_BATSU(1),
+    ROLE_MADA(2);
 
 
     private final String text;

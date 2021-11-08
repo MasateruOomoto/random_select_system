@@ -20,7 +20,9 @@ public class ResultConverter {
         return new Result(
                 rv.getId(),
                 rv.getUserId(),
-                rv.getNumberId(),
+                rv.getWorkbookId(),
+                rv.getChapterId(),
+                rv.getNumber(),
                 rv.getAnswerFlag(),
                 rv.getViewCount());
     }
@@ -39,7 +41,9 @@ public class ResultConverter {
         return new ResultView(
                 r.getId(),
                 r.getUserId(),
-                r.getNumberId(),
+                r.getWorkbookId(),
+                r.getChapterId(),
+                r.getNumber(),
                 r.getAnswerFlag(),
                 r.getViewCount());
     }
@@ -84,7 +88,9 @@ public class ResultConverter {
     public static void copyViewToModel(Result r, ResultView rv) {
         r.setId(rv.getId());
         r.setUserId(rv.getUserId());
-        r.setNumberId(rv.getNumberId());
+        r.setWorkbookId(rv.getWorkbookId());
+        r.setChapterId(rv.getChapterId());
+        r.setNumber(rv.getNumber());
         r.setAnswerFlag(rv.getAnswerFlag());
         r.setViewCount(rv.getViewCount());
     }
@@ -98,7 +104,9 @@ public class ResultConverter {
     public static void copyModelToView(Result r, ResultView rv) {
         rv.setId(r.getId());
         rv.setUserId(r.getUserId());
-        rv.setNumberId(r.getNumberId());
+        rv.setWorkbookId(r.getWorkbookId());
+        rv.setChapterId(r.getChapterId());
+        rv.setNumber(r.getNumber());
         rv.setAnswerFlag(r.getAnswerFlag());
         rv.setViewCount(r.getViewCount());
     }

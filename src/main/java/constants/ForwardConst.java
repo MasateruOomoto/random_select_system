@@ -10,7 +10,7 @@ public enum ForwardConst {
     ACT_CHA("Chapter"),
     ACT_NUM("Number"),
     ACT_AUTH("Auth"),
-    ACT_RAN("Random"),
+    ACT_RES("Result"),
 
 
     //command
@@ -27,6 +27,7 @@ public enum ForwardConst {
     CMD_EDIT("edit"),
     CMD_UPDATE("update"),
     CMD_DESTROY("destroy"),
+    CMD_INDEX_STUDENT("indexStudent"),
 
     //jsp
     FW_ERR_UNKNOWN("error/unknown"),
@@ -49,7 +50,13 @@ public enum ForwardConst {
 
     FW_NUM_INDEX("numbers/index"),
     FW_NUM_NEW("numbers/new"),
-    FW_NUM_EDIT("numbers/edit");
+    FW_NUM_EDIT("numbers/edit"),
+
+    FW_RES_WOR_INDEX("results/workbook_index"),
+    FW_RES_CHA_INDEX("results/chapter_index"),
+    FW_RES_NUM_INDEX("results/number_index"),
+    FW_RES_EDIT("results/edit"),
+    FW_RES_SHOW("results/show")
 
     /**
      * 文字列

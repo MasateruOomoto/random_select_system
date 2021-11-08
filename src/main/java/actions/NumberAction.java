@@ -63,16 +63,14 @@ public class NumberAction extends ActionBase{
             int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
             int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
 
-            //指定されたページ数の一覧画面に表示するデータを取得
-            int page = getPage();
-            List<NumberView> numbers = service.getPerPage(page, SessionWorkbookId, SessionChapterId);
+            //一覧画面に表示するデータを取得
+            List<NumberView> numbers = service.getAll(SessionWorkbookId, SessionChapterId);
 
             //指定されたチャプターのすべての問題番号データの件数を取得
             long numberCount = service.countAll(SessionWorkbookId, SessionChapterId);
 
             putRequestScope(AttributeConst.NUMBERS, numbers); //取得したチャプターデータ
             putRequestScope(AttributeConst.NUMBER_COUNT, numberCount); //全ての問題番号データの件数
-            putRequestScope(AttributeConst.PAGE, page); //ページ数
             putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
             putRequestScope(AttributeConst.CHAPTER, cv); //チャプターの情報をセット
 
@@ -116,15 +114,22 @@ public class NumberAction extends ActionBase{
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            //入力できているか、入力の順番はあっているかをチェックする
-            List <String> errors = NumberValidator.validateNumber(getRequestParam(AttributeConst.FIRST_NUMBER), getRequestParam(AttributeConst.LAST_NUMBER));
+            //入力された値をString型で取得
+            String firstNumber = getRequestParam(AttributeConst.FIRST_NUMBER);
+            String lastNumber = getRequestParam(AttributeConst.LAST_NUMBER);
 
+            //入力内容のバリデーションを行う
+            List <String> errors = NumberValidator.validateNumber(firstNumber, lastNumber);
 
             if (errors.size() > 0) {
                 //正しく入力できていない場合
 
-                //セッションに不備があった個所を登録
-                putSessionScope(AttributeConst.FLUSH, errors);
+                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                putRequestScope(AttributeConst.NUMBER, new NumberView()); //空の問題番号インスタンス
+                putRequestScope(AttributeConst.ERR, errors); //エラーのリスト
+
+                //新規登録画面を表示
+                forward(ForwardConst.FW_NUM_NEW);
 
             } else {
                 //正しく入力できている場合
@@ -147,7 +152,7 @@ public class NumberAction extends ActionBase{
                 }
 
                 //セッションに登録完了のフラッシュメッセージを設定
-                //putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
+                putSessionScope(AttributeConst.FLUSH, MessageConst.I_REGISTERED.getMessage());
 
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_NUM, ForwardConst.CMD_INDEX);
@@ -170,16 +175,14 @@ public class NumberAction extends ActionBase{
             int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
             int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
 
-            //指定されたページ数の一覧画面に表示するデータを取得
-            int page = getPage();
-            List<NumberView> numbers = service.getPerPage(page, SessionWorkbookId, SessionChapterId);
+            //一覧画面に表示するデータを取得
+            List<NumberView> numbers = service.getAll(SessionWorkbookId, SessionChapterId);
 
             //指定されたチャプターのすべての問題番号データの件数を取得
             long numberCount = service.countAll(SessionWorkbookId, SessionChapterId);
 
             putRequestScope(AttributeConst.NUMBERS, numbers); //取得したチャプターデータ
             putRequestScope(AttributeConst.NUMBER_COUNT, numberCount); //全ての問題番号データの件数
-            putRequestScope(AttributeConst.PAGE, page); //ページ数
             putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
 
             //編集画面を表示する
@@ -197,9 +200,9 @@ public class NumberAction extends ActionBase{
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            String[] deleteNumbers = getRequestParams(AttributeConst.DELETE_NUMBER);
+            String[] deleteNumberIds = getRequestParams(AttributeConst.DELETE_NUMBER_ID);
 
-            for (String deleteNumberId : deleteNumbers) {
+            for (String deleteNumberId : deleteNumberIds) {
                 //idを条件にチャプターデータを削除する
                 service.destroy(toNumber(deleteNumberId));
             }

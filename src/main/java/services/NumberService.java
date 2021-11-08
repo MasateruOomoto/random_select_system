@@ -20,7 +20,7 @@ public class NumberService extends ServiceBase {
      * @Param chapterId チャプターのID
      * @return 表示するデータのリスト
      */
-    public List<NumberView> getPerPage(int page, int workbookId, int chapterId) {
+    public List<NumberView> getAll(int workbookId, int chapterId) {
         List<Number> Numbers = em.createNamedQuery(JpaConst.Q_NUM_GET_ALL, Number.class)
                 .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
@@ -71,7 +71,43 @@ public class NumberService extends ServiceBase {
 
         //データの削除を行う
         int delete = em.createNamedQuery(JpaConst.Q_NUM_DELETE)
-                .setParameter(JpaConst.JPQL_PARM_DELETE_NUMBER, deleteNumberId)
+                .setParameter(JpaConst.JPQL_PARM_DELETE_NUMBER_ID, deleteNumberId)
+                .executeUpdate();
+
+        // トランザクション終了
+        em.getTransaction().commit();
+    }
+
+    /**
+     * チャプターidを条件の問題番号データを削除する
+     * @param chapterId チャプターID
+     */
+    public void destroyByChapterId(Integer chapterId) {
+
+        // トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_NUM_DELETE_BY_CHAPTER_ID)
+                .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
+                .executeUpdate();
+
+        // トランザクション終了
+        em.getTransaction().commit();
+    }
+
+    /**
+     * 問題集idを条件の問題番号データを削除する
+     * @param workbookId 問題集ID
+     */
+    public void destroyByWorkbookId(Integer workbookId) {
+
+        // トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_NUM_DELETE_BY_WORKBOOK_ID)
+                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .executeUpdate();
 
         // トランザクション終了
@@ -85,7 +121,7 @@ public class NumberService extends ServiceBase {
      */
     public long countByNumber(Integer inputNumber, Integer workbookId, Integer chapterId) {
 
-        //指定したユーザーIDを保持するユーザーの件数を取得する
+        //指定したユーザーIDを保持する問題番号の件数を取得する
         long numbers_count = (long) em.createNamedQuery(JpaConst.Q_NUM_COUNT_RESISTERED_BY_NUMBER_NUMBER, Long.class)
                 .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)

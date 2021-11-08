@@ -7,10 +7,10 @@
 <c:set var="actUser" value="${ForwardConst.ACT_USER.getValue()}" />
 <c:set var="actWor" value="${ForwardConst.ACT_WOR.getValue()}" />
 <c:set var="actAuth" value="${ForwardConst.ACT_AUTH.getValue()}" />
-<c:set var="actRan" value="${ForwardConst.ACT_RAN.getValue()}" />
 
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commOut" value="${ForwardConst.CMD_LOGOUT.getValue()}" />
+<c:set var="commIdxStu" value="${ForwardConst.CMD_INDEX_STUDENT.getValue()}" />
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -30,7 +30,7 @@
                         <a href="<c:url value='?action=${actUser}&command=${commIdx}' />">ユーザー管理</a>&nbsp;
                         <a href="<c:url value='?action=${actWor}&command=${commIdx}' />">問題集管理</a>&nbsp;
                     </c:if>
-                    <a href="<c:url value='?action=${actRan}&command=${commIdx}' />">問題管理</a>&nbsp;
+                    <a href="<c:url value='?action=${actWor}&command=${commIdxStu}' />">問題管理</a>&nbsp;
                 </c:if>
             </div>
             <c:if test="${sessionScope.login_user != null}">

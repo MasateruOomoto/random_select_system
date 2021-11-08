@@ -33,7 +33,10 @@ import lombok.Setter;
             query = JpaConst.Q_CHA_COUNT_RESISTERED_BY_CHA_NAME_AND_WOR_ID_DEF),
     @NamedQuery(
             name = JpaConst.Q_CHA_DELETE,
-            query = JpaConst.Q_CHA_INFOMATION_DELETE)
+            query = JpaConst.Q_CHA_INFOMATION_DELETE),
+    @NamedQuery(
+            name = JpaConst.Q_CHA_DELETE_BY_WORKBOOK_ID,
+            query = JpaConst.Q_CHA_INFOMATION_DELETE_BY_WORKBOOK_ID)
 })
 
 @Getter

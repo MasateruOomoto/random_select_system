@@ -152,4 +152,22 @@ public class ChapterService extends ServiceBase {
         em.getTransaction().commit();
     }
 
+    /**
+     * 問題集idを条件のチャプターデータを削除する
+     * @param workbookId 問題集ID
+     */
+    public void destroyByWorkbookId(Integer workbookId) {
+
+        // トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_CHA_DELETE_BY_WORKBOOK_ID)
+                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
+                .executeUpdate();
+
+        // トランザクション終了
+        em.getTransaction().commit();
+    }
+
 }

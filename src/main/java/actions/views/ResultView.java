@@ -26,9 +26,19 @@ public class ResultView {
     private Integer userId;
 
     /**
+     * 問題集のID
+     */
+    private Integer workbookId;
+
+    /**
+     * チャプターのID
+     */
+    private Integer chapterId;
+
+    /**
      * 問題番号のID
      */
-    private Integer numberId;
+    private Integer number;
 
     /**
      * 回答フラグ

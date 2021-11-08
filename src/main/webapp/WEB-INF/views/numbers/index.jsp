@@ -31,7 +31,10 @@
         <div id="pagination">
             （全 ${number_count} 件）<br />
         </div>
-        <p><a href="<c:url value='?action=${actNum}&command=${commNew}' />">新規問題番号の登録</a></p>
+        <p>
+            <a href="<c:url value='?action=${actNum}&command=${commNew}' />">新規問題番号の登録</a><br />
+            <a href="<c:url value='?action=${actCha}&command=${commIdx}' />">チャプター一覧に戻る</a>
+        </p>
 
     </c:param>
 </c:import>

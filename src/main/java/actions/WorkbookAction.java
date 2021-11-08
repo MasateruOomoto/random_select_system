@@ -11,6 +11,8 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.ChapterService;
+import services.NumberService;
 import services.WorkbookService;
 
 /**
@@ -36,7 +38,35 @@ public class WorkbookAction extends ActionBase {
         service.close();
     }
 
+    /**
+     * 生徒向けの一覧画面を表示する
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void indexStudent() throws ServletException, IOException {
 
+        //指定されたページ数の一覧画面に表示するデータを取得
+        int page = getPage();
+        List<WorkbookView> workbooks = service.getPerPage(page);
+
+        //全ての問題集データの件数を取得
+        long workbookCount = service.countAll();
+
+        putRequestScope(AttributeConst.WORKBOOKS, workbooks); //取得した問題集データ
+        putRequestScope(AttributeConst.WORKBOOK_COUNT, workbookCount); //全ての問題集データの件数
+        putRequestScope(AttributeConst.PAGE, page); //ページ数
+        putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
+
+        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
+        String flush = getSessionScope(AttributeConst.FLUSH);
+        if (flush != null) {
+            putRequestScope(AttributeConst.FLUSH, flush);
+            removeSessionScope(AttributeConst.FLUSH);
+        }
+
+        //一覧画面を表示
+        forward(ForwardConst.FW_RES_WOR_INDEX);
+    }
 
     /**
      * 一覧画面を表示する
@@ -217,6 +247,14 @@ public class WorkbookAction extends ActionBase {
 
             //idを条件に問題集データを削除する
             service.destroy(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
+
+            //問題集IDを条件にチャプターデータを削除する
+            ChapterService cService = new ChapterService();
+            cService.destroyByWorkbookId(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
+
+            //問題集IDを条件に問題番号でデータを削除する
+            NumberService nService = new NumberService();
+            nService.destroyByWorkbookId(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());

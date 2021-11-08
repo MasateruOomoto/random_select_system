@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import actions.views.ResultView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.PropertyConst;
@@ -249,6 +251,18 @@ public abstract class ActionBase {
      */
     protected String[] getRequestParams(AttributeConst key) {
         return request.getParameterValues(key.getValue());
+    }
+
+    /**
+     * リクエストスコープから指定されたパラメータの値を取得し、返却する
+     * @param key パラメータ名
+     * @return パラメータの値
+     */
+    protected List<ResultView> getRequestListParams(AttributeConst key) {
+
+        return (List<ResultView>)request.getAttribute(key.getValue());
+
+        //return request.getParameterValues(key.getValue());
     }
 
 }

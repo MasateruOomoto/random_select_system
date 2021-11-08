@@ -15,6 +15,7 @@
 
     </div>
 </c:if>
+
 (半角英数字で入力してください)<br/>
 <label for="${AttributeConst.FIRST_NUMBER.getValue()}"></label>
 <input type="text" name="${AttributeConst.FIRST_NUMBER.getValue()}" value="${first_number}" />
