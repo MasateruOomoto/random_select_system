@@ -29,18 +29,11 @@
                 </div>
             </c:if>
 
-
-
-
-
-
             <c:forEach var="result" items="${results}" varStatus="status">
   　            問題番号<c:out value="${result.number}" /><br />
-                <input type="radio" id="radio-<c:out value='${result.number}-ok' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MARU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}-${result.number}" value = "0">解けた
+                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MARU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "<c:out value='${number.id}' />">解けた
 
-                <input type="radio" id="radio-<c:out value='${result.number}-ng' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_BATSU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}-${result.number}" value = "1">解けなかった
-
-                <input type="radio" id="radio-<c:out value='${result.number}-ng' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MADA.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}-${result.number}" value = "2">まだ解いていない
+                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_BATSU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "-1">解けなかった
                 <br />
             </c:forEach>
 
