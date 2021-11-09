@@ -162,6 +162,9 @@ public interface JpaConst {
     String Q_RES_DELETE_BY_CHAPTER_ID = ENTITY_RES + ".deleteByChapterId";
     String Q_RES_INFOMATION_DELETE_BY_CHAPTER_ID = "DELETE FROM Result AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID;
 
+    String Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER = ENTITY_RES + ".getByUserIdAndChapterIdAndNumber";
+    String Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER_DEF = "SELECT e FROM Result AS e WHERE e.userId = :" + JPQL_PARM_USER_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.number = :" + JPQL_PARM_NUMBER;
+
 
 
 

@@ -89,13 +89,13 @@ public class ResultAction extends ActionBase{
     public void edit() throws ServletException, IOException {
 
         //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを元に各種データを取得
-        int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
-        int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
-        UserView SessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
+        int sessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
+        int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+        UserView sessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
 
         //問題番号データからsession_workbook_idとsession_chapter_idに該当するデータを取得する
         NumberService nService = new NumberService();
-        List<NumberView> numbers = nService.getAll(SessionWorkbookId, SessionChapterId);
+        List<NumberView> numbers = nService.getAll(sessionWorkbookId, sessionChapterId);
         nService.close();
 
         //numbersのリストの問題番号を持つNumberViewのリストを作成
@@ -104,17 +104,22 @@ public class ResultAction extends ActionBase{
         for (NumberView number : numbers) {
             //問題番号を条件に回答結果データを作成し、Listに加える
 
+            //回答結果データから該当するチャプターの問題番号を取得する
+            ResultView rv = service.findOne(sessionChapterId, sessionLoginUser.getId(), number.getNumber());
 
-            //パラメータとNumberViewの値を元に回答結果情報のインスタンスを作成する
-            ResultView rv = new ResultView(
-                    null,
-                    SessionLoginUser.getId(),
-                    SessionWorkbookId,
-                    SessionChapterId,
-                    number.getNumber(),
-                    null,
-                    null);
+            //回答結果データにデータが存在しなかった場合代わりのインスタンスを作成する
+            if (rv == null) {
 
+                //回答結果情報のインスタンスを作成する
+                rv = new ResultView(
+                        null,
+                        sessionLoginUser.getId(),
+                        sessionWorkbookId,
+                        sessionChapterId,
+                        number.getNumber(),
+                        null,
+                        null);
+            }
 
             results.add(rv);
         }

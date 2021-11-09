@@ -2,6 +2,8 @@ package services;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import actions.views.ResultConverter;
 import actions.views.ResultView;
 import constants.JpaConst;
@@ -143,6 +145,32 @@ public class ResultService extends ServiceBase {
 
         //トランザクション終了
         em.getTransaction().commit();
+
+    }
+
+    /**
+     * チャプターID、ユーザーID、問題番号を条件に取得したデータをResultViewのインスタンスで返却する
+     * @param chapterId チャプターID
+     * @param userId ユーザーID
+     * @param number 問題番号
+     * @return 取得データのインスタンス 取得できない場合null
+     */
+    public ResultView findOne(int chapterId, int userId, int number) {
+
+        Result r = null;
+
+        try {
+            //回答結果データから該当するチャプターの問題番号を取得する
+            r = em.createNamedQuery(JpaConst.Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER, Result.class)
+                    .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
+                    .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
+                    .setParameter(JpaConst.JPQL_PARM_NUMBER, number)
+                    .getSingleResult();
+
+        } catch (NoResultException ex) {
+        }
+
+        return ResultConverter.toView(r);
 
     }
 

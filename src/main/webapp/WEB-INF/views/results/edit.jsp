@@ -31,9 +31,9 @@
 
             <c:forEach var="result" items="${results}" varStatus="status">
   　            問題番号「<c:out value="${result.number}" />」<br />
-                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MARU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "<c:out value='${result.number}' />">解けた
+                <input type="checkbox" id="<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MARU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "<c:out value='${result.number}' />">解けた
 
-                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_BATSU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "-<c:out value='${result.number}' />">解けなかった
+                <input type="checkbox" id="<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_BATSU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "-<c:out value='${result.number}' />">解けなかった
                 <br />
             </c:forEach>
 

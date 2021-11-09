@@ -35,7 +35,10 @@ import lombok.Setter;
             query = JpaConst.Q_RES_INFOMATION_DELETE_BY_WORKBOOK_ID),
     @NamedQuery(
             name = JpaConst.Q_RES_DELETE_BY_CHAPTER_ID,
-            query = JpaConst.Q_RES_INFOMATION_DELETE_BY_CHAPTER_ID)
+            query = JpaConst.Q_RES_INFOMATION_DELETE_BY_CHAPTER_ID),
+    @NamedQuery(
+            name = JpaConst.Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER,
+            query = JpaConst.Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER_DEF)
 })
 
 @Table(name = JpaConst.TABLE_RES)
