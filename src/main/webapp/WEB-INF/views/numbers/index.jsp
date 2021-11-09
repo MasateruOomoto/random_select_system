@@ -29,7 +29,7 @@
         <a href="<c:url value='?action=${actNum}&command=${commEdit}' />">編集する</a>
 
         <div id="pagination">
-            （全 ${number_count} 件）<br />
+            （全 ${numbers_count} 件）<br />
         </div>
         <p>
             <a href="<c:url value='?action=${actNum}&command=${commNew}' />">新規問題番号の登録</a><br />

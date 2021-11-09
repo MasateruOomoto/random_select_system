@@ -45,37 +45,30 @@ public class ResultAction extends ActionBase{
      */
     public void index() throws ServletException, IOException {
 
-        //jspでchapter_idについてパラメータの引き渡しがあればセッションスコープのchapter_idの値を変更
+        //chapter_idについてパラメータの引き渡しがあればセッションスコープのchapter_idの値を変更
         if (!(getRequestParam(AttributeConst.CHAPTER_ID) == null)) {
 
             putSessionScope(AttributeConst.SESSION_CHAPTER_ID, getRequestParam(AttributeConst.CHAPTER_ID));
         }
 
-        //セッションスコープに登録されている値session_chapter_idに該当するチャプターのViewを取得
-        ChapterService serviceChapter = new ChapterService();
-        ChapterView cv = serviceChapter.findOne(toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID)));
-
         //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを元に各種データを取得
-        int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
-        int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+        int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
         UserView SessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
 
+        //chapter_idに該当するChapterViewを取得
+        ChapterService cService = new ChapterService();
+        ChapterView cv = cService.findOne(sessionChapterId);
+        cService.close();
+
         //一覧画面に表示するデータを取得
-        List<ResultView> results = service.getAll(SessionWorkbookId, SessionChapterId, SessionLoginUser.getId());
+        List<ResultView> results = service.getAll(sessionChapterId, SessionLoginUser.getId());
 
         //指定されたチャプターのすべての問題番号データの件数を取得
-        long resultCount = service.countAll(SessionWorkbookId, SessionChapterId, SessionLoginUser.getId());
+        long resultCount = service.countAll(sessionChapterId, SessionLoginUser.getId());
 
         putRequestScope(AttributeConst.RESULTS, results); //取得した回答結果
         putRequestScope(AttributeConst.RESULT_COUNT, resultCount); //全ての回答番号データの件数
         putRequestScope(AttributeConst.CHAPTER, cv); //チャプターの情報をセット
-
-        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
-        String flush = getSessionScope(AttributeConst.FLUSH);
-        if (flush != null) {
-            putRequestScope(AttributeConst.FLUSH, flush);
-            removeSessionScope(AttributeConst.FLUSH);
-        }
 
         //一覧画面を表示
         forward(ForwardConst.FW_RES_NUM_INDEX);
@@ -88,14 +81,14 @@ public class ResultAction extends ActionBase{
      */
     public void edit() throws ServletException, IOException {
 
-        //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを元に各種データを取得
+        //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを取得
         int sessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
         int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
         UserView sessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
 
         //問題番号データからsession_workbook_idとsession_chapter_idに該当するデータを取得する
         NumberService nService = new NumberService();
-        List<NumberView> numbers = nService.getAll(sessionWorkbookId, sessionChapterId);
+        List<NumberView> numbers = nService.getAll(sessionChapterId);
         nService.close();
 
         //numbersのリストの問題番号を持つNumberViewのリストを作成
@@ -142,21 +135,16 @@ public class ResultAction extends ActionBase{
         //CSRF対策 tokenのチェック
         if (checkToken()) {
 
-            //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを元に各種データを取得
-            int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
-            int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
-            UserView SessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
-
-            //numbersのリストの問題番号を持つNumberViewのリストを作成
-            List<ResultView> results = new ArrayList<ResultView>(); //回答結果のリストを初期化
-
-            results = getSessionScope(AttributeConst.RESULTS);
+            //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを取得
+            int sessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
+            int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+            UserView sessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
 
             //一度回答結果にあるすべての問題番号を消去する
-            service.destroy(SessionWorkbookId, SessionChapterId, SessionLoginUser.getId());
+            service.destroy(sessionChapterId, sessionLoginUser.getId());
 
             //チェックされた問題番号を取得する
-            String[] numbers = getRequestParams(AttributeConst.ANSWER_FLAG);
+            String[] numbers = getRequestParams(AttributeConst.ANSWER_FLAG_NUMBER);
 
             for (String number : numbers) {
 
@@ -169,13 +157,12 @@ public class ResultAction extends ActionBase{
                     //パラメータとNumberViewの値を元に回答結果情報のインスタンスを作成する
                     ResultView rv = new ResultView(
                             null,
-                            SessionLoginUser.getId(),
-                            SessionWorkbookId,
-                            SessionChapterId,
+                            sessionLoginUser.getId(),
+                            sessionWorkbookId,
+                            sessionChapterId,
                             numberInt,
                             0,
                             null);
-
 
                     //新規登録する
                     service.create(rv);
@@ -189,9 +176,9 @@ public class ResultAction extends ActionBase{
                     //パラメータとNumberViewの値を元に回答結果情報のインスタンスを作成する
                     ResultView rv = new ResultView(
                             null,
-                            SessionLoginUser.getId(),
-                            SessionWorkbookId,
-                            SessionChapterId,
+                            sessionLoginUser.getId(),
+                            sessionWorkbookId,
+                            sessionChapterId,
                             numberInt,
                             1,
                             null);
@@ -200,14 +187,12 @@ public class ResultAction extends ActionBase{
                     service.create(rv);
 
                 }
-
             }
 
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_RES, ForwardConst.CMD_INDEX);
 
         }
-
     }
 
     /**
@@ -220,25 +205,24 @@ public class ResultAction extends ActionBase{
         //問題を解き終わってanswerFlagに変更があった場合回答結果データの内容を変更する
 
 
-        //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを元に各種データを取得
-        int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
-        int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
-        UserView SessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
+        //セッションスコープに登録されている値ession_chapter_idとuser_idを取得
+        int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+        UserView sessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
 
-        //回答結果データからsession_workbook_idとsession_chapter_idとUser_idに該当するデータを取得する
-        List<ResultView> results = service.getAll(SessionWorkbookId, SessionChapterId, SessionLoginUser.getId());
+        //回答結果データからchapter_idとuer_idに該当するデータを取得する
+        List<ResultView> results = service.getAll(sessionChapterId, sessionLoginUser.getId());
 
+        //取得したデータの中からランダムで一つデータを取得する
         ResultView result = results.get((int)(Math.random() * results.size()));
 
-        //ランダム表示する問題番号をセッションスコープにセットする
-        putSessionScope(AttributeConst.RESULT, result);
-
         //セッションスコープに登録されている値session_chapter_idに該当するチャプターのViewを取得
-        ChapterService serviceChapter = new ChapterService();
-        ChapterView cv = serviceChapter.findOne(toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID)));
+        ChapterService cService = new ChapterService();
+        ChapterView cv = cService.findOne(toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID)));
+        cService.close();
 
         putRequestScope(AttributeConst.CHAPTER, cv); //チャプターの情報をセット
         putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+        putSessionScope(AttributeConst.RESULT, result); //ランダム表示する問題番号
 
         //新規登録画面を表示
         forward(ForwardConst.FW_RES_SHOW);
@@ -261,19 +245,17 @@ public class ResultAction extends ActionBase{
             //リクエストスコープからフラグの変更を取得する
             int answerFlag = Integer.parseInt(getRequestParam(AttributeConst.ANSWER_FLAG));
 
-            //変更があった場合データの変更を行う
             if (!(rv.getAnswerFlag() == answerFlag)) {
+                //変更があった場合、フラグを変更しデータの変更を行う
 
                 rv.setAnswerFlag(answerFlag);
-
                 service.update(rv);
 
             }
 
             //ランダム表示画面にリダイレクト
             redirect(ForwardConst.ACT_RES, ForwardConst.CMD_SHOW);
+
         }
-
     }
-
 }

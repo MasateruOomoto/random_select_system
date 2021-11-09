@@ -16,15 +16,13 @@ public class ResultService extends ServiceBase {
 
     /**
      * 一覧画面に表示するデータを取得し、ResultViewのリストで返却する
-     * @param page ページ数
-     * @Param workbookId 問題集のID
      * @Param chapterId チャプターのID
+     * @param userId ユーザーID
      * @return 表示するデータのリスト
      */
-    public List<ResultView> getAll(int workbookId, int chapterId, int userId) {
+    public List<ResultView> getAll(int chapterId, int userId) {
 
         List<Result> Results = em.createNamedQuery(JpaConst.Q_RES_GET_ALL, Result.class)
-                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                 .getResultList();
@@ -35,11 +33,12 @@ public class ResultService extends ServiceBase {
 
     /**
      * 回答結果テーブルのデータの件数を取得し、返却する
+     * @param chapterId チャプターID
+     * @param userId ユーザーID
      * @return 回答結果テーブルのデータの件数
      */
-    public long countAll(int workbookId, int chapterId, int userId) {
+    public long countAll(int chapterId, int userId) {
         long resultCount = (long) em.createNamedQuery(JpaConst.Q_RES_COUNT, Long.class)
-                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                 .getSingleResult();
@@ -87,19 +86,17 @@ public class ResultService extends ServiceBase {
 
     /**
      * 回答結果データを1件削除する
-     * @param workbookId 問題集のID
      * @param chapterId チャプターのID
      * @param userId ユーザーのID
      * @return 登録結果(成功:true 失敗:false)
      */
-    public void destroy(int workbookId, int chapterId, int userId) {
+    public void destroy(int chapterId, int userId) {
 
         //トランザクション開始
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID_AND_CHAPTER_ID_AND_USER_ID)
-                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
+        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_CHAPTER_ID_AND_USER_ID)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                 .executeUpdate();

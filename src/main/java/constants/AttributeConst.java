@@ -27,7 +27,7 @@ public enum AttributeConst {
     //ユーザー管理
     USER("user"),
     USERS("users"),
-    USER_COUNT("user_count"),
+    USER_COUNT("users_count"),
     USER_ID("id"),
     USER_USER_ID("user_id"),
     USER_PASS("password"),
@@ -41,7 +41,7 @@ public enum AttributeConst {
     //問題集管理
     WORKBOOK("workbook"),
     WORKBOOKS("workbooks"),
-    WORKBOOK_COUNT("workbook_count"),
+    WORKBOOK_COUNT("workbooks_count"),
     WORKBOOK_ID("workbook_id"),
     WORKBOOK_FLAG("workbook_flag"),
     WORKBOOK_NAME("workbook_name"),
@@ -61,14 +61,14 @@ public enum AttributeConst {
     CHAPTER_NAME("chapter_name"),
     CHAPTER_SORT("chapter_sort"),
     CHAPTER_ID("chapter_id"),
-    CHAPTER_COUNT("chapter_count"),
+    CHAPTER_COUNT("chapters_count"),
     SESSION_CHAPTER_ID("session_chapter_id"),
 
     //問題番号管理
     NUMBER("number"),
     NUMBERS("numbers"),
     NUMBER_ID("number_id"),
-    NUMBER_COUNT("number_count"),
+    NUMBER_COUNT("numbers_count"),
     NUMBER_NUMBER("number_number"),
     FIRST_NUMBER("first_number"),
     LAST_NUMBER("last_number"),
@@ -77,8 +77,9 @@ public enum AttributeConst {
     //回答結果管理
     RESULT("result"),
     RESULTS("results"),
-    RESULT_COUNT("result_count"),
+    RESULT_COUNT("results_count"),
     ANSWER_FLAG("answer_flag"),
+    ANSWER_FLAG_NUMBER("answer_flag_number"),
 
     //回答フラグ
     ROLE_MARU(0),

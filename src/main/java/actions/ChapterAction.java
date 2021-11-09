@@ -49,39 +49,32 @@ public class ChapterAction extends ActionBase {
      */
     public void indexStudent() throws ServletException, IOException {
 
-        //jspでworkbook_idについてパラメータの引き渡しがあればセッションスコープのworkbook_idの値を変更
+        //workbook_idについてパラメータの引き渡しがあればセッションスコープのworkbook_idの値を変更
         if (!(getRequestParam(AttributeConst.WORKBOOK_ID) == null)) {
 
             putSessionScope(AttributeConst.SESSION_WORKBOOK_ID, getRequestParam(AttributeConst.WORKBOOK_ID));
         }
 
-        //セッションスコープのworkbook_idに該当する問題集のViewを取得
-        WorkbookService serviceWorkbook = new WorkbookService();
-        WorkbookView wv = serviceWorkbook.findOne(toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)));
-
-
         //セッションスコープに登録されているworkbook_idを元に各種データを取得
-        int SessionWorkbookId = wv.getId();
+        int sessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
+
+        //セッションスコープのworkbook_idに該当するWorkbookViewを取得
+        WorkbookService wService = new WorkbookService();
+        WorkbookView wv = wService.findOne(sessionWorkbookId);
+        wService.close();
 
         //指定されたページ数の一覧画面に表示するデータを取得
         int page = getPage();
-        List<ChapterView> chapters = service.getPerPage(page, SessionWorkbookId);
+        List<ChapterView> chapters = service.getPerPage(page, sessionWorkbookId);
 
         //指定された問題集のすべてのチャプターデータの件数を取得
-        long chapterCount = service.countAll(SessionWorkbookId);
+        long chapterCount = service.countAll(sessionWorkbookId);
 
         putRequestScope(AttributeConst.CHAPTERS, chapters); //取得したチャプターデータ
         putRequestScope(AttributeConst.CHAPTER_COUNT, chapterCount); //全てのチャプターデータの件数
         putRequestScope(AttributeConst.PAGE, page); //ページ数
         putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
         putRequestScope(AttributeConst.WORKBOOK, wv); //問題集の情報をセット
-
-        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
-        String flush = getSessionScope(AttributeConst.FLUSH);
-        if (flush != null) {
-            putRequestScope(AttributeConst.FLUSH, flush);
-            removeSessionScope(AttributeConst.FLUSH);
-        }
 
         //一覧画面を表示
         forward(ForwardConst.FW_RES_CHA_INDEX);
@@ -97,26 +90,26 @@ public class ChapterAction extends ActionBase {
         //管理者かどうかチェック
         if (checkAdmin()) {
 
-            //jspでworkbook_idについてパラメータの引き渡しがあればセッションスコープのworkbook_idの値を変更
+            //workbook_idについてパラメータの引き渡しがあればセッションスコープのworkbook_idの値を変更
             if (!(getRequestParam(AttributeConst.WORKBOOK_ID) == null)) {
 
                 putSessionScope(AttributeConst.SESSION_WORKBOOK_ID, getRequestParam(AttributeConst.WORKBOOK_ID));
             }
 
-            //セッションスコープのworkbook_idに該当する問題集のViewを取得
-            WorkbookService serviceWorkbook = new WorkbookService();
-            WorkbookView wv = serviceWorkbook.findOne(toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)));
-
-
             //セッションスコープに登録されているworkbook_idを元に各種データを取得
-            int SessionWorkbookId = wv.getId();
+            int sessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
+
+            //workbook_idに該当するWorkbookViewを取得
+            WorkbookService wService = new WorkbookService();
+            WorkbookView wv = wService.findOne(sessionWorkbookId);
+            wService.close();
 
             //指定されたページ数の一覧画面に表示するデータを取得
             int page = getPage();
-            List<ChapterView> chapters = service.getPerPage(page, SessionWorkbookId);
+            List<ChapterView> chapters = service.getPerPage(page, sessionWorkbookId);
 
-            //指定された問題集のすべてのチャプターデータの件数を取得
-            long chapterCount = service.countAll(SessionWorkbookId);
+            //workbook_idに該当するすべてのチャプターデータの件数を取得
+            long chapterCount = service.countAll(sessionWorkbookId);
 
             putRequestScope(AttributeConst.CHAPTERS, chapters); //取得したチャプターデータ
             putRequestScope(AttributeConst.CHAPTER_COUNT, chapterCount); //全てのチャプターデータの件数
@@ -172,11 +165,17 @@ public class ChapterAction extends ActionBase {
             List <String> inputErrors = ChapterValidator.validateInput(chapterName, sort);
 
             if (inputErrors.size() > 0) {
-                //ソートの値が数値でない場合
+                //正しく入力されていない場合
+
+                //パラメータの値を元にチャプター情報のインスタンスを作成する
+                ChapterView cv = new ChapterView(
+                        null,
+                        toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                        chapterName,
+                        null);
 
                 putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.CHAPTER_NAME, chapterName); //入力されていたチャプターの名前をセット
-                putRequestScope(AttributeConst.CHAPTER_SORT, sort); //入力されていたソートの値をセット
+                putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプターの名前をセット
                 putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
 
                 //新規登録画面を表示
@@ -185,7 +184,7 @@ public class ChapterAction extends ActionBase {
 
 
             } else {
-                //ソートの値が正しく入力されていた場合
+                //正しく入力されていた場合
 
                 //パラメータの値を元にチャプター情報のインスタンスを作成する
                 ChapterView cv = new ChapterView(
@@ -194,7 +193,7 @@ public class ChapterAction extends ActionBase {
                         chapterName,
                         toNumber(sort));
 
-                //チャプター情報登録作業を行い、もしもエラーがあればその件数を返す
+                //チャプター情報登録作業を行い、もしもエラーがあればエラーリストを返す
                 List<String> errors = service.create(cv);
 
                 if (errors.size() > 0) {
@@ -269,32 +268,25 @@ public class ChapterAction extends ActionBase {
                 //入力内容のバリデーションを行う
                 List <String> inputErrors = ChapterValidator.validateInput(chapterName, sort);
 
-                if (inputErrors.size() > 0) {
-                    //ソートの値が数値でない場合
+                //パラメータの値を元にチャプター情報のインスタンスを作成する
+                ChapterView cv = new ChapterView(
+                        toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
+                        toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                        chapterName,
+                        toNumber(sort));
 
-                    //パラメータの値を元にチャプター情報のインスタンスを作成する
-                    ChapterView cv = new ChapterView(
-                            toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
-                            toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
-                            chapterName,
-                            toNumber(sort));
+                if (inputErrors.size() > 0) {
+                    //正しく入力されていない場合
 
                     putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                    putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプター情報をセット
+                    putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプター
                     putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
 
                     //新規登録画面を表示
                     forward(ForwardConst.FW_CHA_EDIT);
 
                 } else {
-                    //ソートの値が正しく入力されていた場合
-
-                    //パラメータの値を元にチャプター情報のインスタンスを作成する
-                    ChapterView cv = new ChapterView(
-                            toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
-                            toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
-                            chapterName,
-                            toNumber(sort));
+                    //正しく入力されていた場合
 
                     //チャプター情報更新
                     List<String> errors = service.update(cv);
@@ -340,7 +332,7 @@ public class ChapterAction extends ActionBase {
             nService.destroyByChapterId(toNumber(getRequestParam(AttributeConst.CHAPTER_ID)));
             nService.close();
 
-            //チャプターidを条件に問題番号データを削除する
+            //チャプターidを条件に回答結果データを削除する
             ResultService rService = new ResultService();
             rService.destroyByChapterId(toNumber(getRequestParam(AttributeConst.CHAPTER_ID)));
             rService.close();

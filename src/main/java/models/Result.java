@@ -28,8 +28,8 @@ import lombok.Setter;
             name = JpaConst.Q_RES_COUNT,
             query = JpaConst.Q_RES_COUNT_DEF),
     @NamedQuery(
-            name = JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID_AND_CHAPTER_ID_AND_USER_ID,
-            query = JpaConst.Q_RES_INFOMATION_DELETE_BY_WORKBOOK_ID_AND_CHAPTER_ID_AND_USER_ID),
+            name = JpaConst.Q_RES_DELETE_BY_CHAPTER_ID_AND_USER_ID,
+            query = JpaConst.Q_RES_INFOMATION_DELETE_BY_CHAPTER_ID_AND_USER_ID),
     @NamedQuery(
             name = JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID,
             query = JpaConst.Q_RES_INFOMATION_DELETE_BY_WORKBOOK_ID),

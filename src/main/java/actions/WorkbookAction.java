@@ -205,6 +205,7 @@ public class WorkbookAction extends ActionBase {
 
             //CSRF対策 tokenのチェック
             if (checkToken()) {
+
                 //パラメータの値を元に問題集情報のインスタンスを作成する
                 WorkbookView wv = new WorkbookView(
                         toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)),
@@ -223,6 +224,7 @@ public class WorkbookAction extends ActionBase {
 
                     //編集画面を再表示
                     forward(ForwardConst.FW_WOR_EDIT);
+
                 } else {
                     //更新中にエラーがなかった場合
 
@@ -246,7 +248,7 @@ public class WorkbookAction extends ActionBase {
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            //idを条件に問題集データを削除する
+            //問題集IDを条件に問題集データを削除する
             service.destroy(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
 
             //問題集IDを条件にチャプターデータを削除する
@@ -263,7 +265,6 @@ public class WorkbookAction extends ActionBase {
             ResultService rService = new ResultService();
             rService.destroyByWorkbookId(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
             rService.close();
-
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());

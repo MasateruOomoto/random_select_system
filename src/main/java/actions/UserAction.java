@@ -224,6 +224,7 @@ public class UserAction extends ActionBase {
 
                     //編集画面を再表示
                     forward(ForwardConst.FW_USER_EDIT);
+
                 } else {
                     //更新中にエラーがなかった場合
 

@@ -129,10 +129,10 @@ public interface JpaConst {
 
     //チャプターにあるすべての問題番号を問題番号の昇順に取得する
     String Q_NUM_GET_ALL = ENTITY_NUM + ".getAll";
-    String Q_NUM_GET_ALL_DEF = "SELECT e FROM Number AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " ORDER BY e.number";
+    String Q_NUM_GET_ALL_DEF = "SELECT e FROM Number AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " ORDER BY e.number";
     //チャプターにある全ての問題番号の件数を取得する
     String Q_NUM_COUNT = ENTITY_NUM + ".count";
-    String Q_NUM_COUNT_DEF = "SELECT COUNT(e) FROM Number AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID;
+    String Q_NUM_COUNT_DEF = "SELECT COUNT(e) FROM Number AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID;
     //問題番号を元に問題番号を削除する
     String Q_NUM_DELETE = ENTITY_NUM + ".deleteById";
     String Q_NUM_INFOMATION_DELETE = "DELETE FROM Number AS e WHERE e.id = :" + JPQL_PARM_DELETE_NUMBER_ID;
@@ -148,13 +148,13 @@ public interface JpaConst {
 
     //回答結果にあるすべての問題番号を問題番号の昇順に取得する
     String Q_RES_GET_ALL = ENTITY_RES + ".getALL";
-    String Q_RES_GET_ALL_DEF = "SELECT e FROM Result AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.userId = :" + JPQL_PARM_USER_ID + " ORDER BY e.number";
+    String Q_RES_GET_ALL_DEF = "SELECT e FROM Result AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.userId = :" + JPQL_PARM_USER_ID + " ORDER BY e.number";
     //チャプターにある全ての回答結果の問題番号の件数を取得する
     String Q_RES_COUNT = ENTITY_RES + ".count";
-    String Q_RES_COUNT_DEF = "SELECT COUNT(e) FROM Result AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.userId = :" + JPQL_PARM_USER_ID;
-    //問題集IDとチャプターIDとユーザーIDを元に回答結果データの削除を行う
-    String Q_RES_DELETE_BY_WORKBOOK_ID_AND_CHAPTER_ID_AND_USER_ID = ENTITY_RES + ".delete";
-    String Q_RES_INFOMATION_DELETE_BY_WORKBOOK_ID_AND_CHAPTER_ID_AND_USER_ID = "DELETE FROM Result AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.userId =:" +JPQL_PARM_USER_ID;
+    String Q_RES_COUNT_DEF = "SELECT COUNT(e) FROM Result AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.userId = :" + JPQL_PARM_USER_ID;
+    //チャプターIDとユーザーIDを元に回答結果データの削除を行う
+    String Q_RES_DELETE_BY_CHAPTER_ID_AND_USER_ID = ENTITY_RES + ".delete";
+    String Q_RES_INFOMATION_DELETE_BY_CHAPTER_ID_AND_USER_ID = "DELETE FROM Result AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.userId =:" +JPQL_PARM_USER_ID;
     //問題集IDを元に回答結果データの削除を行う
     String Q_RES_DELETE_BY_WORKBOOK_ID = ENTITY_RES + ".deleteByWorkbookId";
     String Q_RES_INFOMATION_DELETE_BY_WORKBOOK_ID = "DELETE FROM Result AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;

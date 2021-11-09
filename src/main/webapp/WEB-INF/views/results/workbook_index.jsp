@@ -4,6 +4,7 @@
 <%@ page import="constants.ForwardConst" %>
 
 <c:set var="actCha" value="${ForwardConst.ACT_CHA.getValue()}" />
+<c:set var="actWor" value="${ForwardConst.ACT_WOR.getValue()}" />
 <c:set var="commIdxStu" value="${ForwardConst.CMD_INDEX_STUDENT.getValue()}" />
 
 <c:import url="../layout/app.jsp">
@@ -53,7 +54,7 @@
         </table>
 
         <div id="pagination">
-            （全 ${workbook_count} 件）<br />
+            （全 ${workbooks_count} 件）<br />
             <c:forEach var="i" begin="1" end="${((workbooks_count - 1) / maxRow) + 1}" step="1">
                 <c:choose>
                     <c:when test="${i == page}">

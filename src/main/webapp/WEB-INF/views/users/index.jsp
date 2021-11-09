@@ -32,7 +32,7 @@
         </table>
 
         <div id="pagination">
-            （全 ${user_count} 件）<br />
+            （全 ${users_count} 件）<br />
             <c:forEach var="i" begin="1" end="${((users_count - 1) / maxRow) + 1}" step="1">
                 <c:choose>
                     <c:when test="${i == page}">
@@ -44,6 +44,7 @@
                 </c:choose>
             </c:forEach>
         </div>
+
         <p><a href="<c:url value='?action=${actUser}&command=${commNew}' />">新規ユーザーの登録</a></p>
 
     </c:param>

@@ -16,13 +16,11 @@ public class NumberService extends ServiceBase {
     /**
      * 一覧画面に表示するデータを取得し、WorkNumberViewのリストで返却する
      * @param page ページ数
-     * @Param workbookId 問題集のID
      * @Param chapterId チャプターのID
      * @return 表示するデータのリスト
      */
-    public List<NumberView> getAll(int workbookId, int chapterId) {
+    public List<NumberView> getAll(int chapterId) {
         List<Number> Numbers = em.createNamedQuery(JpaConst.Q_NUM_GET_ALL, Number.class)
-                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .getResultList();
 
@@ -31,11 +29,11 @@ public class NumberService extends ServiceBase {
 
     /**
      * 問題番号テーブルのデータの件数を取得し、返却する
+     * @param chapterId チャプターのID
      * @return 問題番号テーブルのデータの件数
      */
-    public long countAll(int workbookId, int chapterId) {
+    public long countAll(int chapterId) {
         long NumberCount = (long) em.createNamedQuery(JpaConst.Q_NUM_COUNT, Long.class)
-                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .getSingleResult();
 

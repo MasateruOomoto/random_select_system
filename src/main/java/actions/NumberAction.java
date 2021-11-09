@@ -49,37 +49,30 @@ public class NumberAction extends ActionBase{
         //管理者かどうかチェック
         if (checkAdmin()) {
 
-            //jspでchapter_idについてパラメータの引き渡しがあればセッションスコープのchapter_idの値を変更
+            //chapter_idについてパラメータの引き渡しがあればセッションスコープのchapter_idの値を変更
             if (!(getRequestParam(AttributeConst.CHAPTER_ID) == null)) {
 
                 putSessionScope(AttributeConst.SESSION_CHAPTER_ID, getRequestParam(AttributeConst.CHAPTER_ID));
             }
 
-            //セッションスコープに登録されている値session_chapter_idに該当するチャプターのViewを取得
-            ChapterService serviceChapter = new ChapterService();
-            ChapterView cv = serviceChapter.findOne(toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID)));
-
             //セッションスコープに登録されている値session_workbook_idとsession_chapter_idを元に各種データを取得
-            int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
-            int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+            int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
 
-            //一覧画面に表示するデータを取得
-            List<NumberView> numbers = service.getAll(SessionWorkbookId, SessionChapterId);
+            //chapter_idに該当するチャプターのViewを取得
+            ChapterService cService = new ChapterService();
+            ChapterView cv =cService.findOne(sessionChapterId);
+            cService.close();
+
+            //chapter_idに該当するデータを取得
+            List<NumberView> numbers = service.getAll(sessionChapterId);
 
             //指定されたチャプターのすべての問題番号データの件数を取得
-            long numberCount = service.countAll(SessionWorkbookId, SessionChapterId);
+            long numberCount = service.countAll(sessionChapterId);
 
             putRequestScope(AttributeConst.NUMBERS, numbers); //取得したチャプターデータ
             putRequestScope(AttributeConst.NUMBER_COUNT, numberCount); //全ての問題番号データの件数
             putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
             putRequestScope(AttributeConst.CHAPTER, cv); //チャプターの情報をセット
-
-            //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
-            String flush = getSessionScope(AttributeConst.FLUSH);
-            if (flush != null) {
-                putRequestScope(AttributeConst.FLUSH, flush);
-                removeSessionScope(AttributeConst.FLUSH);
-            }
 
             //一覧画面を表示
             forward(ForwardConst.FW_NUM_INDEX);
@@ -138,7 +131,8 @@ public class NumberAction extends ActionBase{
                 int workbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
                 int chapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
 
-                for (int inputNumber = toNumber(getRequestParam(AttributeConst.FIRST_NUMBER)); inputNumber < toNumber(getRequestParam(AttributeConst.LAST_NUMBER))+1; inputNumber++) {
+                //入力された範囲にあるすべての問題番号を登録する
+                for (int inputNumber = toNumber(firstNumber); inputNumber < toNumber(lastNumber)+1; inputNumber++) {
 
                     //パラメータの値を元に問題番号情報のインスタンスを作成する
                     NumberView nv = new NumberView(
@@ -147,7 +141,7 @@ public class NumberAction extends ActionBase{
                             toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID)),
                             inputNumber);
 
-                    //問題番号の情報登録作業を行う    既に登録していないかのバリデーションも行う
+                    //問題番号の情報登録作業を行う
                     service.create(nv, inputNumber, workbookId, chapterId);
                 }
 
@@ -172,14 +166,13 @@ public class NumberAction extends ActionBase{
 
 
             //セッションスコープに登録されている値session_workbook_idとsession_chapter_idを元に各種データを取得
-            int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
-            int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+            int sessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
 
             //一覧画面に表示するデータを取得
-            List<NumberView> numbers = service.getAll(SessionWorkbookId, SessionChapterId);
+            List<NumberView> numbers = service.getAll(sessionChapterId);
 
-            //指定されたチャプターのすべての問題番号データの件数を取得
-            long numberCount = service.countAll(SessionWorkbookId, SessionChapterId);
+            //チャプターIDを元にのすべての問題番号データの件数を取得
+            long numberCount = service.countAll(sessionChapterId);
 
             putRequestScope(AttributeConst.NUMBERS, numbers); //取得したチャプターデータ
             putRequestScope(AttributeConst.NUMBER_COUNT, numberCount); //全ての問題番号データの件数

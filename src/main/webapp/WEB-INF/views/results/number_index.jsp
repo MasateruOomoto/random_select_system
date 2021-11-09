@@ -49,7 +49,7 @@
         <a href="<c:url value='?action=${actRes}&command=${commEdit}' />">編集する</a>
 
         <div id="pagination">
-            （全 ${result_count} 件）<br />
+            （全 ${results_count} 件）<br />
         </div>
         <p>
             <a href="<c:url value='?action=${actRes}&command=${commShow}' />">ランダムで表示する</a><br />
