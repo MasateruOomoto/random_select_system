@@ -15,6 +15,7 @@ import constants.MessageConst;
 import models.validators.ChapterValidator;
 import services.ChapterService;
 import services.NumberService;
+import services.ResultService;
 import services.WorkbookService;
 
 
@@ -338,6 +339,11 @@ public class ChapterAction extends ActionBase {
             NumberService nService = new NumberService();
             nService.destroyByChapterId(toNumber(getRequestParam(AttributeConst.CHAPTER_ID)));
             nService.close();
+
+            //チャプターidを条件に問題番号データを削除する
+            ResultService rService = new ResultService();
+            rService.destroyByChapterId(toNumber(getRequestParam(AttributeConst.CHAPTER_ID)));
+            rService.close();
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());

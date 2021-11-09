@@ -82,7 +82,7 @@ public class ResultAction extends ActionBase{
     }
 
     /**
-     * 登録画面を表示する
+     * 編集画面を表示する
      * @throws ServletException
      * @throws IOException
      */
@@ -112,7 +112,7 @@ public class ResultAction extends ActionBase{
                     SessionWorkbookId,
                     SessionChapterId,
                     number.getNumber(),
-                    2,
+                    null,
                     null);
 
 
@@ -137,26 +137,69 @@ public class ResultAction extends ActionBase{
         //CSRF対策 tokenのチェック
         if (checkToken()) {
 
+            //セッションスコープに登録されている値session_workbook_idとsession_chapter_idとuser_idを元に各種データを取得
+            int SessionWorkbookId = toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID));
+            int SessionChapterId = toNumber(getSessionScope(AttributeConst.SESSION_CHAPTER_ID));
+            UserView SessionLoginUser = getSessionScope(AttributeConst.LOGIN_USER);
 
-            List<ResultView> results = getSessionScope(AttributeConst.RESULTS);
-            String[] answerFlags = getRequestParams(AttributeConst.ANSWER_FLAG);
+            //numbersのリストの問題番号を持つNumberViewのリストを作成
+            List<ResultView> results = new ArrayList<ResultView>(); //回答結果のリストを初期化
 
-            //チェックされた問題番号を登録する
-            for (int i = 0; i < results.size(); i++) {
-                //リストから要素を取得
-                ResultView result = results.get(i);
+            results = getSessionScope(AttributeConst.RESULTS);
 
-                //問題番号に対応するanswerFlagを取得
-                String answerFlag = answerFlags[i];
+            //一度回答結果にあるすべての問題番号を消去する
+            service.destroy(SessionWorkbookId, SessionChapterId, SessionLoginUser.getId());
 
-                //resultのanswerFlagに入力された値を代入し登録する
-                result.setAnswerFlag(Integer.parseInt(answerFlag));
+            //チェックされた問題番号を取得する
+            String[] numbers = getRequestParams(AttributeConst.ANSWER_FLAG);
 
-                service.create(result);
+            for (String number : numbers) {
+
+                int numberInt = Integer.parseInt(number);
+
+
+                if (numberInt > 0) {
+                    //解けたにチェックされた問題を登録する
+
+                    //パラメータとNumberViewの値を元に回答結果情報のインスタンスを作成する
+                    ResultView rv = new ResultView(
+                            null,
+                            SessionLoginUser.getId(),
+                            SessionWorkbookId,
+                            SessionChapterId,
+                            numberInt,
+                            0,
+                            null);
+
+
+                    //新規登録する
+                    service.create(rv);
+
+                } else if (numberInt < 0) {
+                    //解けなかったにチェックされた問題を登録する
+
+                    //問題番号をプラスの数字に変換する
+                    numberInt = numberInt * (-1);
+
+                    //パラメータとNumberViewの値を元に回答結果情報のインスタンスを作成する
+                    ResultView rv = new ResultView(
+                            null,
+                            SessionLoginUser.getId(),
+                            SessionWorkbookId,
+                            SessionChapterId,
+                            numberInt,
+                            1,
+                            null);
+
+                    //新規登録する
+                    service.create(rv);
+
+                }
+
             }
 
-            //新規登録画面を再表示
-            forward(ForwardConst.FW_RES_NUM_INDEX);
+            //一覧画面にリダイレクト
+            redirect(ForwardConst.ACT_RES, ForwardConst.CMD_INDEX);
 
         }
 

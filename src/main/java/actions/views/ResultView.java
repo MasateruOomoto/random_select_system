@@ -36,7 +36,7 @@ public class ResultView {
     private Integer chapterId;
 
     /**
-     * 問題番号のID
+     * 問題番号
      */
     private Integer number;
 

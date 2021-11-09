@@ -83,4 +83,67 @@ public class ResultService extends ServiceBase {
 
     }
 
+    /**
+     * 回答結果データを1件削除する
+     * @param workbookId 問題集のID
+     * @param chapterId チャプターのID
+     * @param userId ユーザーのID
+     * @return 登録結果(成功:true 失敗:false)
+     */
+    public void destroy(int workbookId, int chapterId, int userId) {
+
+        //トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID_AND_CHAPTER_ID_AND_USER_ID)
+                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
+                .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
+                .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
+                .executeUpdate();
+
+        //トランザクション終了
+        em.getTransaction().commit();
+    }
+
+    /**
+     * 問題集IDを元に回答結果データを削除する
+     * @param workbookId 問題集のID
+     * @return 登録結果(成功:true 失敗:false)
+     */
+    public void destroyByWorkbookId(int workbookId) {
+
+        //トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID)
+                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
+                .executeUpdate();
+
+        //トランザクション終了
+        em.getTransaction().commit();
+
+    }
+
+    /**
+     * チャプターIDを元に回答結果データを削除する
+     * @param chapterId チャプターのID
+     * @return 登録結果(成功:true 失敗:false)
+     */
+    public void destroyByChapterId(int chapterId) {
+
+        //トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_CHAPTER_ID)
+                .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
+                .executeUpdate();
+
+        //トランザクション終了
+        em.getTransaction().commit();
+
+    }
+
 }

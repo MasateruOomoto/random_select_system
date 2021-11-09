@@ -13,6 +13,7 @@ import constants.JpaConst;
 import constants.MessageConst;
 import services.ChapterService;
 import services.NumberService;
+import services.ResultService;
 import services.WorkbookService;
 
 /**
@@ -251,10 +252,18 @@ public class WorkbookAction extends ActionBase {
             //問題集IDを条件にチャプターデータを削除する
             ChapterService cService = new ChapterService();
             cService.destroyByWorkbookId(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
+            cService.close();
 
-            //問題集IDを条件に問題番号でデータを削除する
+            //問題集IDを条件に問題番号データを削除する
             NumberService nService = new NumberService();
             nService.destroyByWorkbookId(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
+            nService.close();
+
+            //問題集IDを条件に回答結果データを削除する
+            ResultService rService = new ResultService();
+            rService.destroyByWorkbookId(toNumber(getRequestParam(AttributeConst.WORKBOOK_ID)));
+            rService.close();
+
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());

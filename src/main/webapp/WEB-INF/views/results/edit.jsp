@@ -30,30 +30,21 @@
             </c:if>
 
             <c:forEach var="result" items="${results}" varStatus="status">
-  　            問題番号<c:out value="${result.number}" /><br />
-                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MARU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "<c:out value='${number.id}' />">解けた
+  　            問題番号「<c:out value="${result.number}" />」<br />
+                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_MARU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "<c:out value='${result.number}' />">解けた
 
-                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_BATSU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "-1">解けなかった
+                <input type="checkbox" id="radio-<c:out value='${result.number}' />" <c:if test="${result.answerFlag == AttributeConst.ROLE_BATSU.getIntegerValue()}"> checked</c:if> name="${AttributeConst.ANSWER_FLAG.getValue()}" value = "-<c:out value='${result.number}' />">解けなかった
                 <br />
             </c:forEach>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <br />
             <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
             <button type="submit">選択した問題番号を登録する</button>
         </form>
+
+        <p>
+            <a href="<c:url value='?action=${action}&command=${commIdx}' />">問題番号一覧に戻る</a>
+        </p>
 
     </c:param>
 </c:import>
