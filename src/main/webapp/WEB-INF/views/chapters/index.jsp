@@ -27,7 +27,7 @@
                 <c:forEach var="chapter" items="${chapters}" varStatus="status">
                     <tr class="row${status.count % 2}">
                         <td>
-                            <a href="<c:url value='?action=${actNum}&command=${commIdx}&chapter_id=${chapter.id}' />"><c:out value="${chapter.chapterName}" /></a>
+                            チャプター<c:out value="${chapter.sort}" />&nbsp;<a href="<c:url value='?action=${actNum}&command=${commIdx}&chapter_id=${chapter.id}' />"><c:out value="${chapter.chapterName}" /></a>
                         </td>
                         <td><a href="<c:url value='?action=${actCha}&command=${commEdit}&chapter_id=${chapter.id}' />">編集する</a></td>
                     </tr>

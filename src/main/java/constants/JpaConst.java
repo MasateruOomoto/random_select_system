@@ -74,6 +74,7 @@ public interface JpaConst {
 
     String JPQL_PARM_CHAPTER_NAME = "chapterName"; //チャプター名
     String JPQL_PARM_CHAPTER_ID = "chapterId"; //チャプターID
+    String JPQL_PARM_SORT = "sort"; //ソート番号
 
     String JPQL_PARM_DELETE_NUMBER_ID = "deleteNumberId"; //削除する問題番号のID
     String JPQL_PARM_NUMBER = "number"; //問題番号
@@ -126,6 +127,9 @@ public interface JpaConst {
     //問題集IDを元にチャプターデータを削除する
     String Q_CHA_DELETE_BY_WORKBOOK_ID = ".deketeByWorkbookId";
     String Q_CHA_INFOMATION_DELETE_BY_WORKBOOK_ID = "DELETE FROM Chapter AS e WHERE e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;
+    //問題集にある指定したソート番号を保有するデータの件数を取得する
+    String Q_CHA_COUNT_BY_SORT = ENTITY_CHA + ".getAllBySort";
+    String Q_CHA_COUNT_BY_SORT_DEF = "SELECT COUNT(e) FROM Chapter AS e WHERE e.sort = :" + JPQL_PARM_SORT + " AND e.workbookId = :" + JPQL_PARM_WORKBOOK_ID;
 
     //チャプターにあるすべての問題番号を問題番号の昇順に取得する
     String Q_NUM_GET_ALL = ENTITY_NUM + ".getAll";
@@ -161,9 +165,12 @@ public interface JpaConst {
     //チャプターIDを元に回答結果データの削除を行う
     String Q_RES_DELETE_BY_CHAPTER_ID = ENTITY_RES + ".deleteByChapterId";
     String Q_RES_INFOMATION_DELETE_BY_CHAPTER_ID = "DELETE FROM Result AS e WHERE e.chapterId = :" + JPQL_PARM_CHAPTER_ID;
-
+    //ユーザーIDとチャプターIDを元に回答結果データの取得を行う
     String Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER = ENTITY_RES + ".getByUserIdAndChapterIdAndNumber";
     String Q_RES_GET_BY_USER_ID_AND_CHAPTER_ID_AND_NUMBER_DEF = "SELECT e FROM Result AS e WHERE e.userId = :" + JPQL_PARM_USER_ID + " AND e.chapterId = :" + JPQL_PARM_CHAPTER_ID + " AND e.number = :" + JPQL_PARM_NUMBER;
+    //ユーザーIDを元に回答結果データの削除を行う
+    String Q_RES_DELETE_BY_USER_ID = ENTITY_RES + ".deleteByUserId";
+    String Q_RES_INFOMATION_DELETE_BT_USER_ID = "DELETE FROM Result AS e WHERE e.userId = ;" + JPQL_PARM_USER_ID;
 
 
 

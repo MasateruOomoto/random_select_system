@@ -146,6 +146,26 @@ public class ResultService extends ServiceBase {
     }
 
     /**
+     * ユーザーIDを元に回答結果データを削除する
+     * @param userId ユーザーID
+     * @return 登録結果(成功:true 失敗:false)
+     */
+    public void destroyByUserId(int userId) {
+
+        //トランザクション開始
+        em.getTransaction().begin();
+
+        //データの削除を行う
+        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_USER_ID)
+                .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
+                .executeUpdate();
+
+        //トランザクション終了
+        em.getTransaction().commit();
+
+    }
+
+    /**
      * チャプターID、ユーザーID、問題番号を条件に取得したデータをResultViewのインスタンスで返却する
      * @param chapterId チャプターID
      * @param userId ユーザーID

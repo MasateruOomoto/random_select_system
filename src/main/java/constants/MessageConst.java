@@ -28,6 +28,7 @@ public enum MessageConst {
     E_NOSORT("ソート番号を入力してください。"),
     E_NOTSORT("ソート番号に数値を入力してください"),
     E_CHAPTER_NAME_EXIST("入力されたチャプター名の情報はすでに存在しています。"),
+    E_SORT_EXIST("入力されたソート番号の情報はすでに存在しています。"),
 
     E_NONUMBER("問題番号を入力してください。"),
     E_NOTNUMBER("問題番号に数値を入力してください。"),

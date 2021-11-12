@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 
 import actions.views.ChapterView;
 import actions.views.NumberView;
-import actions.views.UserView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
@@ -205,30 +204,6 @@ public class NumberAction extends ActionBase{
 
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_NUM, ForwardConst.CMD_INDEX);
-        }
-
-    }
-
-    /**
-     * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示
-     * true: 管理者 false: 管理者ではない
-     * @throws ServletException
-     * @throws IOException
-     */
-    public boolean checkAdmin() throws ServletException, IOException {
-
-        //セッションからログイン中のユーザー情報を取得
-        UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
-
-        //管理者でなければエラー画面を表示
-        if (uv.getAdminFlag() != AttributeConst.ROLE_ADMIN.getIntegerValue()) {
-
-            forward(ForwardConst.FW_ERR_UNKNOWN);
-            return false;
-
-        } else {
-
-            return true;
         }
 
     }

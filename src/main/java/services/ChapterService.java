@@ -42,14 +42,30 @@ public class ChapterService extends ServiceBase {
     }
 
     /**
+     * ソート番号を元にチャプターテーブルの件数を取得し、返却する
+     * @param sort
+     * @param workbookId
+     * @return チャプターテーブルのデータの件数
+     */
+    public long countAll(int sort, int workbookId) {
+        long sortCount = (long) em.createNamedQuery(JpaConst.Q_CHA_COUNT_BY_SORT, Long.class)
+                .setParameter(JpaConst.JPQL_PARM_SORT, sort)
+                .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
+                .getSingleResult();
+
+        return sortCount;
+    }
+
+    /**
      * 画面から入力されたチャプターの登録内容を元にデータを1件作成し、チャプターテーブルに登録する
      * @param cv 画面から入力された問題集の登録内容
+     * @param workbookId 問題集のID
      * @return バリデーションや登録処理中に発生したエラーのリスト
      */
-    public List<String> create(ChapterView cv) {
+    public List<String> create(ChapterView cv, int workbookId) {
 
         //登録内容のバリデーションを行う
-        List<String> errors = ChapterValidator.validate(this, cv, true);
+        List<String> errors = ChapterValidator.validate(this, cv, true, workbookId);
 
         //バリデーションエラーがなければデータを登録する
         if (errors.size() == 0) {
@@ -102,9 +118,10 @@ public class ChapterService extends ServiceBase {
     /**
      * 画面から入力されたチャプターの更新内容を元にデータを1件作成し、チャプターテーブルを更新する
      * @param cv 画面から入力されたチャプターの登録内容
+     * @param workbookId 問題集のID
      * @return バリデーションや更新処理中に発生したエラーのリスト
      */
-    public List<String> update(ChapterView cv) {
+    public List<String> update(ChapterView cv, int workbookId) {
 
         //idを条件に登録済みのチャプター情報を取得する
         ChapterView savedChapter = findOne(cv.getId());
@@ -120,7 +137,7 @@ public class ChapterService extends ServiceBase {
         savedChapter.setSort(cv.getSort()); //変更後のソート番号を設定する
 
         //更新内容についてのバリデーションを行う
-        List<String> errors = ChapterValidator.validate(this, savedChapter, validateName);
+        List<String> errors = ChapterValidator.validate(this, savedChapter, validateName, workbookId);
 
         //バリデーションエラーがなければデータを更新する
         if (errors.size() == 0) {

@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import actions.views.UserView;
 import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.PropertyConst;
@@ -122,7 +123,7 @@ public abstract class ActionBase {
      * @throws ServletException
      * @throws IOException
      */
-    protected boolean checkToken() throws ServletException, IOException {
+     protected boolean checkToken() throws ServletException, IOException {
 
         //パラメータからtokenの値を取得
         String _token = getRequestParam(AttributeConst.TOKEN);
@@ -134,6 +135,30 @@ public abstract class ActionBase {
 
             return false;
         } else {
+            return true;
+        }
+
+    }
+
+    /**
+     * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示
+     * true: 管理者 false: 管理者ではない
+     * @throws ServletException
+     * @throws IOException
+     */
+     protected boolean checkAdmin() throws ServletException, IOException {
+
+        //セッションからログイン中のユーザー情報を取得
+        UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
+
+        //管理者でなければエラー画面を表示
+        if (uv.getAdminFlag() != AttributeConst.ROLE_ADMIN.getIntegerValue()) {
+
+            forward(ForwardConst.FW_ERR_UNKNOWN);
+            return false;
+
+        } else {
+
             return true;
         }
 

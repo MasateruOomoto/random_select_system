@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import actions.views.ChapterView;
-import actions.views.UserView;
 import actions.views.WorkbookView;
 import constants.AttributeConst;
 import constants.ForwardConst;
@@ -161,30 +160,53 @@ public class ChapterAction extends ActionBase {
             String chapterName = getRequestParam(AttributeConst.CHAPTER_NAME);
             String sort = getRequestParam(AttributeConst.CHAPTER_SORT);
 
+            //ソートについてのバリデーションを行う
+            String inputSortError = ChapterValidator.validateInputSort(sort);
+
             //入力内容のバリデーションを行う
-            List <String> inputErrors = ChapterValidator.validateInput(chapterName, sort);
+            List <String> inputErrors = ChapterValidator.validateInput(chapterName, inputSortError);
 
             if (inputErrors.size() > 0) {
-                //正しく入力されていない場合
+                //すべて正しく入力されていない場合
 
-                //パラメータの値を元にチャプター情報のインスタンスを作成する
-                ChapterView cv = new ChapterView(
-                        null,
-                        toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
-                        chapterName,
-                        null);
+                if (!inputSortError.equals("")) {
+                    //ソートの値が正しく入力されていなかった場合
 
-                putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプターの名前をセット
-                putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
+                    //パラメータの値を元にチャプター情報のインスタンスを作成する
+                    ChapterView cv = new ChapterView(
+                            null,
+                            toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                            chapterName,
+                            null);
 
-                //新規登録画面を表示
-                forward(ForwardConst.FW_CHA_NEW);
+                    putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                    putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプターの名前をセット
+                    putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
 
+                    //新規登録画面を表示
+                    forward(ForwardConst.FW_CHA_NEW);
 
+                } else {
+                   //ソートの値が正しく入力されている場合
+
+                    //パラメータの値を元にチャプター情報のインスタンスを作成する
+                    ChapterView cv = new ChapterView(
+                            null,
+                            toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                            chapterName,
+                            toNumber(sort));
+
+                    putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                    putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプターの名前をセット
+                    putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
+
+                    //新規登録画面を表示
+                    forward(ForwardConst.FW_CHA_NEW);
+
+                }
 
             } else {
-                //正しく入力されていた場合
+                //すべて正しく入力されていた場合
 
                 //パラメータの値を元にチャプター情報のインスタンスを作成する
                 ChapterView cv = new ChapterView(
@@ -194,7 +216,7 @@ public class ChapterAction extends ActionBase {
                         toNumber(sort));
 
                 //チャプター情報登録作業を行い、もしもエラーがあればエラーリストを返す
-                List<String> errors = service.create(cv);
+                List<String> errors = service.create(cv, toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)));
 
                 if (errors.size() > 0) {
                     //登録中にエラーがあった場合
@@ -265,31 +287,62 @@ public class ChapterAction extends ActionBase {
                 String chapterName = getRequestParam(AttributeConst.CHAPTER_NAME);
                 String sort = getRequestParam(AttributeConst.CHAPTER_SORT);
 
-                //入力内容のバリデーションを行う
-                List <String> inputErrors = ChapterValidator.validateInput(chapterName, sort);
+                //ソートについてのバリデーションを行う
+                String inputSortError = ChapterValidator.validateInputSort(sort);
 
-                //パラメータの値を元にチャプター情報のインスタンスを作成する
-                ChapterView cv = new ChapterView(
-                        toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
-                        toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
-                        chapterName,
-                        toNumber(sort));
+                //入力内容のバリデーションを行う
+                List <String> inputErrors = ChapterValidator.validateInput(chapterName, inputSortError);
 
                 if (inputErrors.size() > 0) {
-                    //正しく入力されていない場合
+                    //すべて正しく入力されていない場合
 
-                    putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
-                    putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプター
-                    putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
+                    if (!inputSortError.equals("")) {
+                        //ソート番号が正しく入力されていない場合
 
-                    //新規登録画面を表示
-                    forward(ForwardConst.FW_CHA_EDIT);
+                        //パラメータの値を元にチャプター情報のインスタンスを作成する
+                        ChapterView cv = new ChapterView(
+                                toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
+                                toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                                chapterName,
+                                null);
+
+                        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                        putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプターの名前をセット
+                        putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
+
+                        //新規登録画面を表示
+                        forward(ForwardConst.FW_CHA_EDIT);
+                    } else {
+                        //ソートの値が正しく入力されている場合
+
+                        //パラメータの値を元にチャプター情報のインスタンスを作成する
+                        ChapterView cv = new ChapterView(
+                                toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
+                                toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                                chapterName,
+                                toNumber(sort));
+
+                        putRequestScope(AttributeConst.TOKEN, getTokenId()); //CSRF対策用トークン
+                        putRequestScope(AttributeConst.CHAPTER, cv); //入力されていたチャプターの名前をセット
+                        putRequestScope(AttributeConst.ERR, inputErrors); //エラーのリスト
+
+                        //新規登録画面を表示
+                        forward(ForwardConst.FW_CHA_EDIT);
+
+                    }
 
                 } else {
-                    //正しく入力されていた場合
+                    //すべて正しく入力されていた場合
+
+                    //パラメータの値を元にチャプター情報のインスタンスを作成する
+                    ChapterView cv = new ChapterView(
+                            toNumber(getRequestParam(AttributeConst.CHAPTER_ID)),
+                            toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)),
+                            chapterName,
+                            toNumber(sort));
 
                     //チャプター情報更新
-                    List<String> errors = service.update(cv);
+                    List<String> errors = service.update(cv, toNumber(getSessionScope(AttributeConst.SESSION_WORKBOOK_ID)));
 
                     if (errors.size() > 0) {
                         //更新中にエラーが発生した場合
@@ -343,29 +396,5 @@ public class ChapterAction extends ActionBase {
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_CHA, ForwardConst.CMD_INDEX);
         }
-    }
-
-    /**
-     * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示
-     * true: 管理者 false: 管理者ではない
-     * @throws ServletException
-     * @throws IOException
-     */
-    public boolean checkAdmin() throws ServletException, IOException {
-
-        //セッションからログイン中のユーザー情報を取得
-        UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
-
-        //管理者でなければエラー画面を表示
-        if (uv.getAdminFlag() != AttributeConst.ROLE_ADMIN.getIntegerValue()) {
-
-            forward(ForwardConst.FW_ERR_UNKNOWN);
-            return false;
-
-        } else {
-
-            return true;
-        }
-
     }
 }

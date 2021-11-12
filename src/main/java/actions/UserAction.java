@@ -11,6 +11,7 @@ import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
 import constants.PropertyConst;
+import services.ResultService;
 import services.UserService;
 
 /**
@@ -248,8 +249,13 @@ public class UserAction extends ActionBase {
         //CSRF対策 tokenのチェック
         if (checkToken() && checkAdmin()) {
 
-            //idを条件にユーザーデータを削除する
+            //ユーザーidを条件にユーザーデータを削除する
             service.destroy(toNumber(getRequestParam(AttributeConst.USER_ID)));
+
+            //ユーザーidを条件に回答結果データを削除する
+            ResultService rService = new ResultService();
+            rService.destroyByUserId(toNumber(getRequestParam(AttributeConst.USER_ID)));
+            rService.close();
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH, MessageConst.I_DELETED.getMessage());
@@ -257,30 +263,6 @@ public class UserAction extends ActionBase {
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_USER, ForwardConst.CMD_INDEX);
         }
-    }
-
-    /**
-     * ログイン中のユーザーが管理者かどうかチェックし、管理者でなければエラー画面を表示
-     * true: 管理者 false: 管理者ではない
-     * @throws ServletException
-     * @throws IOException
-     */
-    public boolean checkAdmin() throws ServletException, IOException {
-
-        //セッションからログイン中のユーザー情報を取得
-        UserView uv = (UserView) getSessionScope(AttributeConst.LOGIN_USER);
-
-        //管理者でなければエラー画面を表示
-        if (uv.getAdminFlag() != AttributeConst.ROLE_ADMIN.getIntegerValue()) {
-
-            forward(ForwardConst.FW_ERR_UNKNOWN);
-            return false;
-
-        } else {
-
-            return true;
-        }
-
     }
 
 }

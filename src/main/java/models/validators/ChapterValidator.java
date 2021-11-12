@@ -17,10 +17,10 @@ public class ChapterValidator {
     /**
      * 入力された値についてバリデーションを行う
      * @param chapterName チャプターの名前
-     * @param sort 入力されたソートの値
+     * @param inputSortError ソートの値のエラー
      * @return エラーのリスト
      */
-    public static List<String> validateInput(String chapterName, String sort) {
+    public static List<String> validateInput(String chapterName, String inputSortError) {
 
         List<String> inputError = new ArrayList<String>();
 
@@ -30,8 +30,7 @@ public class ChapterValidator {
             inputError.add(inputNameError);
         }
 
-        //正しく入力されているかチェック
-        String inputSortError = validateInputSort(sort);
+        //ソートが正しく入力されていなかった場合
         if (!inputSortError.equals("")) {
             inputError.add(inputSortError);
         }
@@ -62,7 +61,7 @@ public class ChapterValidator {
      * @param lastNujmber 入力された最後の番号
      * @return エラーのリスト
      */
-    private static String validateInputSort(String sort) {
+    public static String validateInputSort(String sort) {
 
         //入力値がなければエラーメッセージを返却
         if (sort == null || sort.equals("")) {
@@ -115,10 +114,11 @@ public class ChapterValidator {
      * @param service 呼び出し元Serviceクラスのインスタンス
      * @param cv ChapterServiceのインスタンス
      * @param chapterDuplicateCheckFlag チャプターの重複チェックを実施するかどうか(実施する:true 実施しない:false)
+     * @param workbookId 問題集のID
      * @return エラーのリスト
      */
     public static List<String> validate(
-            ChapterService service, ChapterView cv, Boolean chapterNameDuplicateCheckFlag) {
+            ChapterService service, ChapterView cv, Boolean chapterNameDuplicateCheckFlag, int workbookId) {
         List<String> errors = new ArrayList<String>();
 
         //チャプター名の名前のチェック
@@ -127,7 +127,33 @@ public class ChapterValidator {
             errors.add(chapterNameError);
         }
 
+        //ソートの重複チェック
+        String chapterSortError = validateSort(service, cv.getSort(), workbookId);
+        if (!chapterSortError.equals("")) {
+            errors.add(chapterSortError);
+        }
+
         return errors;
+    }
+
+    /**
+     * ソート番号の入力の重複チェックを行う
+     * @param service
+     * @param sort
+     * @param workbookId
+     * @return
+     */
+    private static String validateSort(ChapterService service, int sort, int workbookId) {
+
+        long sortCount = service.countAll(sort, workbookId);
+
+        //同一ソート番号が既に登録されている場合はエラーメッセージを返却
+        if (sortCount > 0) {
+            return MessageConst.E_SORT_EXIST.getMessage();
+        }
+
+        //エラーがない場合は空文字を返却
+        return "";
     }
 
     /**
