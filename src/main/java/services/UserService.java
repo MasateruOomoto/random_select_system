@@ -172,7 +172,7 @@ public class UserService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_USER_DELETE)
+        em.createNamedQuery(JpaConst.Q_USER_DELETE)
                 .setParameter(JpaConst.JPQL_PARM_ID, id)
                 .executeUpdate();
 

@@ -5,7 +5,6 @@
 
 
 <c:set var="action" value="${ForwardConst.ACT_NUM.getValue()}" />
-<c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commDel" value="${ForwardConst.CMD_DESTROY.getValue()}" />
 
@@ -37,5 +36,8 @@
             <button type="submit">選択した問題番号を削除する</button>
         </form>
 
+        <p>
+            <a href="<c:url value='?action=${action}&command=${commIdx}' />">一覧に戻る</a>
+        </p>
     </c:param>
 </c:import>

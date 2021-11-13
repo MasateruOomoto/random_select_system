@@ -161,7 +161,7 @@ public class ChapterService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_CHA_DELETE)
+        em.createNamedQuery(JpaConst.Q_CHA_DELETE)
                 .setParameter(JpaConst.JPQL_PARM_ID, id)
                 .executeUpdate();
 
@@ -179,7 +179,7 @@ public class ChapterService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_CHA_DELETE_BY_WORKBOOK_ID)
+        em.createNamedQuery(JpaConst.Q_CHA_DELETE_BY_WORKBOOK_ID)
                 .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .executeUpdate();
 

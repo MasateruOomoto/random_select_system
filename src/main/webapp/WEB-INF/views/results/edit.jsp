@@ -7,7 +7,6 @@
 <c:set var="action" value="${ForwardConst.ACT_RES.getValue()}" />
 <c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
-<c:set var="commDel" value="${ForwardConst.CMD_DESTROY.getValue()}" />
 <c:set var="commCrt" value="${ForwardConst.CMD_CREATE.getValue()}" />
 
 <c:import url="../layout/app.jsp">

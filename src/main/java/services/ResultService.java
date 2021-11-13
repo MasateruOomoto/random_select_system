@@ -96,7 +96,7 @@ public class ResultService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_CHAPTER_ID_AND_USER_ID)
+        em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_CHAPTER_ID_AND_USER_ID)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                 .executeUpdate();
@@ -116,7 +116,7 @@ public class ResultService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID)
+        em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_WORKBOOK_ID)
                 .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .executeUpdate();
 
@@ -136,7 +136,7 @@ public class ResultService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_CHAPTER_ID)
+        em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_CHAPTER_ID)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .executeUpdate();
 
@@ -156,7 +156,7 @@ public class ResultService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_USER_ID)
+        em.createNamedQuery(JpaConst.Q_RES_DELETE_BY_USER_ID)
                 .setParameter(JpaConst.JPQL_PARM_USER_ID, userId)
                 .executeUpdate();
 

@@ -3,11 +3,8 @@
 <%@ page import="constants.AttributeConst" %>
 <%@ page import="constants.ForwardConst" %>
 
-<c:set var="actWor" value="${ForwardConst.ACT_WOR.getValue()}" />
 <c:set var="actCha" value="${ForwardConst.ACT_CHA.getValue()}" />
-<c:set var="actNum" value="${ForwardConst.ACT_NUM.getValue()}" />
 <c:set var="actRes" value="${ForwardConst.ACT_RES.getValue()}" />
-<c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commEdit" value="${ForwardConst.CMD_EDIT.getValue()}" />
 <c:set var="commShow" value="${ForwardConst.CMD_SHOW.getValue()}" />

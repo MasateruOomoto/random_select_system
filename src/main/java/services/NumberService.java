@@ -68,7 +68,7 @@ public class NumberService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_NUM_DELETE)
+        em.createNamedQuery(JpaConst.Q_NUM_DELETE)
                 .setParameter(JpaConst.JPQL_PARM_DELETE_NUMBER_ID, deleteNumberId)
                 .executeUpdate();
 
@@ -86,7 +86,7 @@ public class NumberService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_NUM_DELETE_BY_CHAPTER_ID)
+        em.createNamedQuery(JpaConst.Q_NUM_DELETE_BY_CHAPTER_ID)
                 .setParameter(JpaConst.JPQL_PARM_CHAPTER_ID, chapterId)
                 .executeUpdate();
 
@@ -104,7 +104,7 @@ public class NumberService extends ServiceBase {
         em.getTransaction().begin();
 
         //データの削除を行う
-        int delete = em.createNamedQuery(JpaConst.Q_NUM_DELETE_BY_WORKBOOK_ID)
+        em.createNamedQuery(JpaConst.Q_NUM_DELETE_BY_WORKBOOK_ID)
                 .setParameter(JpaConst.JPQL_PARM_WORKBOOK_ID, workbookId)
                 .executeUpdate();
 
